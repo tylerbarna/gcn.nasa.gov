@@ -149,6 +149,7 @@ export default function () {
 
   // Concatenate items from the action and loader functions
   const allItems = [...(newItem ? [newItem] : []), ...(items || [])]
+  console.log(allItems)
 
   const [searchParams] = useSearchParams()
   const query = searchParams.get('query') ?? undefined

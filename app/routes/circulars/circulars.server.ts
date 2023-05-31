@@ -70,9 +70,12 @@ export async function search({
     index: 'circulars',
     body: {
       query: query && {
-        multi_match: { query, fields: ['submitter', 'subject', 'body'] },
+        multi_match: {
+          query,
+          fields: ['submitter', 'subject', 'body', 'createdOn'],
+        },
       },
-      fields: ['subject'],
+      fields: ['subject', 'createdOn'],
       _source: false,
       sort: {
         circularId: {
@@ -90,13 +93,18 @@ export async function search({
       _id: circularId,
       fields: {
         subject: [subject],
+        createdOn: [createdOn],
       },
     }: {
       _id: string
-      fields: { subject: string[] }
+      fields: {
+        subject: string[]
+        createdOn: number[]
+      }
     }) => ({
       circularId,
       subject,
+      createdOn,
     })
   )
 
