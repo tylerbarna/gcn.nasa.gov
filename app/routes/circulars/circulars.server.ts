@@ -15,6 +15,7 @@ import memoizee from 'memoizee'
 import { getUser } from '../__auth/user.server'
 import { bodyIsValid, formatAuthor, subjectIsValid } from './circulars.lib'
 import type { Circular, CircularMetadata } from './circulars.lib'
+import { formatDateISO } from './circulars.lib'
 import { search as getSearch } from '~/lib/search.server'
 
 export const group = 'gcn.nasa.gov/circular-submitter'
@@ -72,9 +73,9 @@ export async function search({
       query: query && {
         multi_match: {
           query,
-          fields: ['submitter', 'subject', 'body', 'createdOn'],
+          fields: ['submitter', 'subject', 'body'],
         },
-      },
+      }, // add a range filter based on the createdOn field
       fields: ['subject', 'createdOn'],
       _source: false,
       sort: {
@@ -99,7 +100,7 @@ export async function search({
       _id: string
       fields: {
         subject: string[]
-        createdOn: number[]
+        createdOn: Date[]
       }
     }) => ({
       circularId,
@@ -107,6 +108,10 @@ export async function search({
       createdOn,
     })
   )
+  // convert the createdOn dates to ISO strings inside the items array
+  items.forEach((item: any) => {
+    item.createdOn = formatDateISO(item.createdOn)
+  })
 
   const totalPages = limit ? Math.ceil(totalItems / limit) : 1
 

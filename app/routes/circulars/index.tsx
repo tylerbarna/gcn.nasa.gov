@@ -17,6 +17,7 @@ import {
 import {
   Button,
   ButtonGroup,
+  DateRangePicker,
   Icon,
   Label,
   TextInput,
@@ -41,6 +42,8 @@ export async function loader({ request: { url } }: DataFunctionArgs) {
   }
   const page = parseInt(searchParams.get('page') || '1')
   const results = await search({ query, page: page - 1, limit })
+  //console.log(results)
+
   return { page, ...results }
 }
 
@@ -149,7 +152,7 @@ export default function () {
 
   // Concatenate items from the action and loader functions
   const allItems = [...(newItem ? [newItem] : []), ...(items || [])]
-  console.log(allItems)
+  //console.log(allItems)
 
   const [searchParams] = useSearchParams()
   const query = searchParams.get('query') ?? undefined
@@ -158,6 +161,10 @@ export default function () {
 
   const [input, setInput] = useState(query)
   const clean = input === query
+
+  // current date in format mm-dd-yyyy (NOT mm/dd/yyyy)
+  // const today = currentDate()
+  // console.log(today)
 
   const submit = useSubmit()
 
@@ -196,6 +203,15 @@ export default function () {
               if (!value) submit(form)
             }}
           />
+          <Button
+            type="button"
+            className="height-4 padding-top-0 padding-bottom-0"
+            onClick={() => {
+              console.log('test')
+            }}
+          >
+            &gt;&gt;
+          </Button>
           <Button type="submit">
             <img
               src={searchImg}
@@ -213,6 +229,30 @@ export default function () {
           </Button>
         </Link>
       </ButtonGroup>
+
+      <Form onSubmit={function noRefCheck() {}}>
+        <DateRangePicker
+          endDateHint="mm/dd/yyyy"
+          endDateLabel="End date"
+          endDatePickerProps={{
+            defaultValue: '2030-01-01',
+            disabled: false,
+            id: 'event-date-end',
+            name: 'event-date-end',
+          }}
+          startDateHint="mm/dd/yyyy"
+          startDateLabel="Start date"
+          startDatePickerProps={{
+            defaultValue: '1970-01-01',
+            disabled: false,
+            id: 'event-date-start',
+            name: 'event-date-start',
+          }}
+        />
+      </Form>
+
+      {/* console.log($('event-date-end').data('daterangepicker').startDate.format('YYYY-MM-DD')) */}
+
       <Hint id="searchHint">
         Search for Circulars by submitter, subject, or body text (e.g. 'Fermi
         GRB'). <br />
