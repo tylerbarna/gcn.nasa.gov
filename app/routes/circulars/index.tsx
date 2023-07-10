@@ -194,7 +194,8 @@ export default function () {
   if (searchParamsString) searchParamsString = `?${searchParamsString}`
 
   const [inputQuery, setInputQuery] = useState(query)
-  const clean = inputQuery === query
+  const [inputStartDate, setInputStartDate] = useState(startDate)
+  const clean = inputQuery === query && inputStartDate === startDate
 
   const submit = useSubmit()
 
@@ -241,6 +242,33 @@ export default function () {
             />
           </Button>
         </Form>
+        
+        <Form
+          className="display-inline-block usa-search usa-search--small"
+        >
+          <Label srOnly={true} htmlFor="startDate">
+            Search
+          </Label>
+          <TextInput
+            id="startDate"
+            name="startDate"
+            type="text"
+            defaultValue={inputStartDate}
+            placeholder="input start date"
+            aria-describedby="searchHint"
+            onChange={({ target: { form, value } }) => {
+              setInputStartDate(value)
+              if (!value) submit(form)
+            }}
+          />
+          {/* <Button type="submit">
+            <img
+              src={searchImg}
+              className="usa-search__submit-icon"
+              alt="Search"
+            />
+          </Button> */}
+        </Form>
         <Link to="/circulars/new">
           <Button
             type="button"
@@ -250,6 +278,9 @@ export default function () {
           </Button>
         </Link>
       </ButtonGroup>
+      <Hint id="note">
+        note here that submitting one text input box clears the other url search parameter when using useState
+      </Hint>
       <Hint id="searchHint">
         Search for Circulars by submitter, subject, or body text (e.g. 'Fermi
         GRB'). <br />
