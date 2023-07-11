@@ -31,11 +31,26 @@ import { getFormDataString } from '~/lib/utils'
 
 import searchImg from 'app/theme/img/usa-icons-bg/search--white.svg'
 
-export default function () {
-  return(
-<div> you are in testing.tsx </div>
+import {Popup} from '~/components/Popup'
 
-    // <Button 
+export default function () {
+
+  return(
+  <>
+  
+  <div> you are in testing.tsx </div>
     
+    <Button
+      type="button"
+      className="height-4 padding-top-0 padding-bottom-0"
+      onClick={() => {
+        console.log('pressed button')
+      } }
+    >
+
+    </Button>
+    <Popup/>
+
+    </>
   )
 }
