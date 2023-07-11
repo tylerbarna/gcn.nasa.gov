@@ -36,6 +36,7 @@ const limit = 100
 export async function loader({ request: { url } }: DataFunctionArgs) {
   const { searchParams } = new URL(url)
   const query = searchParams.get('query') || undefined
+  console.log('query', query)
   if (query) {
     await circularRedirect(query)
   }
@@ -241,11 +242,7 @@ export default function () {
               alt="Search"
             />
           </Button>
-        </Form>
-        
-        <Form
-          className="display-inline-block usa-search usa-search--small"
-        >
+
           <Label srOnly={true} htmlFor="startDate">
             Search
           </Label>
@@ -288,64 +285,7 @@ export default function () {
         (e.g. 'gcn123', 'Circular 123', or '123').
       </Hint>
 
-      <ButtonGroup>
-                <Form
-          className="display-inline-block usa-search usa-search--small"
-          role="search"
-        >
-          <Label srOnly={true} htmlFor="query">
-            Search
-          </Label>
-          <TextInput
-            id="query"
-            name="query"
-            type="search"
-            defaultValue={inputQuery}
-            placeholder="Search"
-            aria-describedby="searchHint"
-            onChange={({ target: { form, value } }) => {
-              setInputQuery(value)
-              if (!value) submit(form)
-            }}
-          />
-          <Button type="submit">
-            <img
-              src={searchImg}
-              className="usa-search__submit-icon"
-              alt="Search"
-            />
-          </Button>
-        </Form>
-        
-        <Form
-          className="display-inline-block usa-search usa-search--small"
-        >
-          <Label srOnly={true} htmlFor="startDate">
-            Search
-          </Label>
-          <TextInput
-            id="startDate"
-            name="startDate"
-            type="text"
-            defaultValue={inputStartDate}
-            placeholder="input start date"
-            aria-describedby="searchHint"
-            onChange={({ target: { form, value } }) => {
-              setInputStartDate(value)
-              if (!value) submit(form)
-            }}
-          />
-          {/* <Button type="submit">
-            <img
-              src={searchImg}
-              className="usa-search__submit-icon"
-              alt="Search"
-            />
-          </Button> */}
-        </Form>
-      </ButtonGroup>
 
-      
       {clean && (
         <>
           {query && (
