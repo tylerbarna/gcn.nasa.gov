@@ -5,6 +5,7 @@
  *
  * SPDX-License-Identifier: NASA-1.3
  */
+import { NavLink } from '@remix-run/react'
 import {
   Accordion,
   Button,
@@ -61,6 +62,44 @@ function hidableCardWithToggleElement() {
   )
 }
 
+function dropDownButton({
+  label,
+  menuId,
+  isOpen,
+  onToggle,
+  isCurrent,
+  className,
+  ...props
+}: {
+  label: string
+  menuId: string
+  isOpen: boolean
+  onToggle: () => void
+  isCurrent?: boolean
+} & Parameters<typeof Button>[0]) {
+  return (
+    <Button
+      className={`usa-nav__link ${className}`}
+      style={{ padding: 0 }}
+      {...props}
+    >
+      <button
+        type="button"
+        className="usa-accordion__button"
+        data-testid="navDropDownButton"
+        aria-expanded={isOpen}
+        aria-controls={menuId}
+        onClick={(e) => {
+          onToggle()
+          e.preventDefault()
+        }}
+      >
+        {label}
+      </button>
+    </Button>
+  )
+}
+
 export function hideableElement(hidden: boolean, element: any) {
   return <>{hidden && element}</>
 }
@@ -72,7 +111,6 @@ export function Popup() {
 
   return (
     <>
-      {hidableCard()}
       {/* {hidableCardWithToggleElement()} */}
       {/* grid that is hidden but appears when expanded */}
 
