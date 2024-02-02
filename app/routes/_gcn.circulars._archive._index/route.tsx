@@ -53,7 +53,7 @@ export async function loader({ request: { url } }: LoaderFunctionArgs) {
   const endDate = searchParams.get('endDate') || undefined
   const page = parseInt(searchParams.get('page') || '1')
   const limit = clamp(parseInt(searchParams.get('limit') || '100'), 1, 100)
-  const sort = searchParams.get('sort') || 'circularId'
+  const sort = searchParams.get('sort') || 'date'
   const results = await search({
     query,
     page: page - 1,

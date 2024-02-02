@@ -16,21 +16,21 @@ import {
 } from '@trussworks/react-uswds'
 import classNames from 'classnames'
 import type { ChangeEvent } from 'react'
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 
 import DetailsDropdownContent from '~/components/DetailsDropdownContent'
 
-const sortOptions = [
-  { id: 'radio-sort-circularId', value: 'circularID', label: 'Circular' },
-  { id: 'radio-sort-relevance', value: 'relevance', label: 'Relevance' },
-]
+const sortOptions: Record<string, string> = {
+  date: 'Date',
+  relevance: 'Relevance',
+}
 
 function SortButton({
   sort,
   expanded,
   ...props
 }: {
-  sort?: string
+  sort: string
   expanded?: boolean
 } & Omit<Parameters<typeof ButtonGroup>[0], 'segmented' | 'children'>) {
   const slimClasses = 'height-4 padding-y-0'
@@ -38,9 +38,7 @@ function SortButton({
   return (
     <ButtonGroup type="segmented" {...props}>
       <Button type="button" className={`${slimClasses} padding-x-2`}>
-        Sorted By{' '}
-        {sortOptions.find((option) => option.value === sort)?.label ||
-          'Circular'}
+        Sort By {sortOptions[sort] || 'Date'}
       </Button>
       <Button type="button" className={`${slimClasses} padding-x-2`}>
         {<Icon.FilterList role="presentation" />}
@@ -62,46 +60,16 @@ export function SortSelector({
   defaultValue?: string
 }) {
   const [showContent, setShowContent] = useState(false)
-
-  const sortInputRef = useRef<HTMLInputElement>(null)
-
   const submit = useSubmit()
+  defaultValue ??= 'date'
 
-  function radioOnChange({ target: { value } }: ChangeEvent<HTMLInputElement>) {
-    if (sortInputRef.current) {
-      sortInputRef.current.value = value
-    }
+  function radioOnChange({ target: { form } }: ChangeEvent<HTMLInputElement>) {
     setShowContent(false)
-    const form = sortInputRef.current?.form
-    if (form) submit(form)
+    submit(form)
   }
-
-  const SortRadioButtons = () => (
-    <>
-      {sortOptions.map(({ id, value, label }) => (
-        <Radio
-          key={id}
-          id={id}
-          name={''}
-          value={value}
-          label={label}
-          form={form}
-          defaultChecked={defaultValue === value}
-          onChange={radioOnChange}
-        />
-      ))}
-    </>
-  )
 
   return (
     <>
-      <input
-        type="hidden"
-        name="sort"
-        form={form}
-        ref={sortInputRef}
-        defaultValue={defaultValue}
-      />
       <SortButton
         sort={defaultValue}
         expanded={showContent}
@@ -117,7 +85,18 @@ export function SortSelector({
       >
         <CardBody>
           <Grid col={1}>
-            <SortRadioButtons />
+            {Object.entries(sortOptions).map(([value, label]) => (
+              <Radio
+                key={value}
+                id={value}
+                name="sort"
+                value={value}
+                label={label}
+                form={form}
+                defaultChecked={defaultValue === value}
+                onChange={radioOnChange}
+              />
+            ))}
           </Grid>
         </CardBody>
       </DetailsDropdownContent>
