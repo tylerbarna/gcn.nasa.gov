@@ -23,7 +23,7 @@ import {
   TextInput,
 } from '@trussworks/react-uswds'
 import clamp from 'lodash/clamp'
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 
 import { getUser } from '../_gcn._auth/user.server'
 import {
@@ -154,12 +154,14 @@ export default function () {
       </Hint>
       {clean && (
         <>
-          <CircularsIndex
-            allItems={allItems}
-            searchString={searchString}
-            totalItems={totalItems}
-            query={query}
-          />
+          <Suspense fallback={<Loading />}>
+            <CircularsIndex
+              allItems={allItems}
+              searchString={searchString}
+              totalItems={totalItems}
+              query={query}
+            />
+          </Suspense>
           <div className="display-flex flex-row flex-wrap">
             <div className="display-flex flex-align-self-center margin-right-2 width-auto">
               <div>
@@ -197,4 +199,8 @@ export default function () {
       )}
     </>
   )
+}
+
+function Loading() {
+  return <div>Loading...</div>
 }
