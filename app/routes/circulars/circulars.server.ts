@@ -300,16 +300,35 @@ export async function put(
 
 export async function circularRedirect(query: string) {
   const validCircularSearchStyles =
-    /^\s*(?:GCN)?\s*(?:CIRCULAR)?\s*(-?\d+(?:\.\d)?)\s*$/i
-  const circularId = parseFloat(
-    validCircularSearchStyles.exec(query)?.[1] || ''
-  )
-  if (!isNaN(circularId)) {
-    const db = await tables()
-    const result = await db.circulars.get({ circularId })
-    if (!result) return
-    const circularURL = `/circulars/${circularId}`
-    throw redirect(circularURL)
+    /\b(?:GCN)?\s*(?:CIRCULAR)?\s*(-?\d+(?:\.\d)?)\b/gi 
+  
+  const circularIds = [] 
+  let match 
+  while ((match = validCircularSearchStyles.exec(query)) !== null) {
+    const circularId = parseFloat(match[1]) 
+    if (!isNaN(circularId)) {
+      circularIds.push(circularId) 
+    }
+  }
+
+  if (circularIds.length === 0) return 
+
+  const db = await tables() 
+  const validCircularIds = [] 
+
+  for (const circularId of circularIds) {
+    const result = await db.circulars.get({ circularId }) 
+    if (result) {
+      validCircularIds.push(circularId) 
+    }
+  }
+
+  if (validCircularIds.length > 0) {
+    const firstCircularId = validCircularIds[0] 
+    const remainingCircularIds = validCircularIds.slice(1).join(',') 
+
+    const circularURL = `/circulars/${firstCircularId}?others=${remainingCircularIds}` 
+    throw redirect(circularURL) 
   }
 }
 
