@@ -333,7 +333,7 @@ export default function () {
         To navigate to a specific circular, enter the associated Circular ID
         (e.g. 'gcn123', 'Circular 123', or '123').
       </Hint>
-      {useFeature('CIRCULARS_LUCENE') && <LuceneAccordion />}
+      <LuceneAccordion />
       {clean && (
         <>
           {isGroupView ? (

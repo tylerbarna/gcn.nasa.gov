@@ -5,11 +5,6 @@ handle:
 
 import { feature } from '~/lib/env.server'
 
-export function loader() {
-  if (feature('CIRCULARS_LUCENE')) return null
-  else throw new Response(null, { status: 404 })
-}
-
 # Advanced Search
 
 The full-text search feature allows for searching keywords in a specific field of the circular. The search feature uses the [Lucene query syntax](https://lucene.apache.org/core/2_9_4/queryparsersyntax.html) to specify the field and search term.
