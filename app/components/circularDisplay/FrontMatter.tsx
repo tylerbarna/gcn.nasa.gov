@@ -37,6 +37,7 @@ function FrontMatterItem({
 
 export function FrontMatter({
   subject,
+  eventId,
   createdOn,
   submitter,
   submittedHow,
@@ -45,6 +46,7 @@ export function FrontMatter({
 }: Pick<
   Circular,
   | 'subject'
+  | 'eventId'
   | 'createdOn'
   | 'submitter'
   | 'submittedHow'
@@ -54,6 +56,7 @@ export function FrontMatter({
   return (
     <>
       <FrontMatterItem label="Subject">{subject}</FrontMatterItem>
+      {eventId && <FrontMatterItem label="Event">{eventId}</FrontMatterItem>}
       <FrontMatterItem label="Date">
         {formatDateISO(createdOn)}{' '}
         <small className="text-base-light">
