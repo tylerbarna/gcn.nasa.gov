@@ -5,7 +5,7 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-import { Grid } from '@trussworks/react-uswds'
+import { Grid, Link } from '@trussworks/react-uswds'
 import type { ReactNode } from 'react'
 
 import TimeAgo from '~/components/TimeAgo'
@@ -56,7 +56,11 @@ export function FrontMatter({
   return (
     <>
       <FrontMatterItem label="Subject">{subject}</FrontMatterItem>
-      {eventId && <FrontMatterItem label="Event">{eventId}</FrontMatterItem>}
+      {eventId && (
+        <FrontMatterItem label="Event">
+          <Link href={`/circulars?query=eventId:"${eventId}"`}>{eventId}</Link>
+        </FrontMatterItem>
+      )}
       <FrontMatterItem label="Date">
         {formatDateISO(createdOn)}{' '}
         <small className="text-base-light">
