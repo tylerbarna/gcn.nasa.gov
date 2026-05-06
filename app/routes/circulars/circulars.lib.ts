@@ -288,3 +288,79 @@ export function parseEventFromSubject(value: string) {
     if (match) return normalize(match)
   }
 }
+
+type EventType = "Retraction" | "GRB" | "GW" | "SGR" | "FRB" | "SN" | "AGN" | "Neutrino" | "X-Ray Transient" | "Afterglow" | "Optical Transient"
+
+const eventTypeMatchers: Record<EventType, RegExp[]> = {
+  Retraction: [
+    /\bRetraction\b/i,
+    /\bRetractions\b/i,
+    /\bnot\s+a\s+(?:GRB|GW|FRB|SN|SGR|neutrino)\b/i,
+    /\bprobably\s+not\s+a\b/i,
+    /\bis\s+not\b/i,
+  ],
+  GRB: [
+    /\bGRB\d{6}[A-Z]?\b/i,
+    /\bGRBs?\b/i,
+    /\bgamma[-\s]?ray[-\s]?bursts?\b/i,
+    /\bFermi(?:\s?(?:GBM|LAT)|\d{9})?\b/i,
+    /\bSwift(?:[/-](?:BAT|XRT|UVOT))?\b/i,
+    /\bSVOM\b/i,
+    /\bINTEGRAL\b/i,
+    /\bXRF\d{6}[A-Z]?\b/i,
+    /\bMASTER\b/i,
+    /\bHAWC\b/i,
+    /\bHETE\b/i,
+    /\bKONUS\b/i,
+    /\bAstroSat\b/i,
+  ],
+  GW: [
+    /\bGW\d+\b/i,
+    /\bGWs?\b/i,
+    /\bgravitational[-\s]?waves?\b/i,
+    /\bLIGO\b/i,
+    /\bVirgo\b/i,
+    /\bKAGRA\b/i,
+    /\bS\d{6}[a-z]+\b/i,
+  ],
+  SGR: [
+    /\bSGR\S*/i,
+    /\bsoft[-\s]?gamma[-\s]?repeaters?\b/i,
+  ],
+  FRB: [
+    /\bFRB\s?\d{6,8}[A-Za-z]?\b/i,
+    /\bFRBs?\b/i,
+    /\bfast[-\s]?radio[-\s]?bursts?\b/i,
+  ],
+  SN: [
+    /\bSN\d{4}[A-Za-z]*\b/i,
+    /\bSNe?\b/i,
+    /\bsuper[-\s]?novae?\b/i,
+  ],
+  AGN: [
+    /\bAGN\b/i,
+    /\bactive[-\s]?galactic\s+nuclei?\b/i,
+  ],
+  Neutrino: [
+    /\bneutrinos?\b/i,
+    /\bIceCube(?:-HAWC|-\d+)?\b/i,
+    /\bANTARES\b/i,
+    /\bKM3NeT\b/i,
+  ],
+  'X-Ray Transient': [
+    /\bEPW?\d{6,8}[A-Z]{0,2}\b/i,
+    /\bX[-\s]?ray(?:\s+transient)?\b/i,
+    /\bEinstein\s+Probe\b/i,
+    /\bMAXI\s?J\d{4}[+\-]\d+/i,
+    /\bXRT\b/i,
+  ],
+  Afterglow: [
+    /\bafterglows?\b/i,
+  ],
+  'Optical Transient': [
+    /\boptical\s+transient\b/i,
+    /\bZTF\d{2}[A-Za-z0-9]+\b/i,
+    /\bAT\d{4}[a-z]+\b/i,
+  ],
+}
+
