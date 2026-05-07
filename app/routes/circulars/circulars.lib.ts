@@ -296,7 +296,6 @@ type EventType =
   | 'SGR'
   | 'FRB'
   | 'SN'
-  | 'AGN'
   | 'Neutrino'
   | 'X-Ray Transient'
   | 'Afterglow'
@@ -340,7 +339,6 @@ const eventTypeMatchers: Record<EventType, RegExp[]> = {
     /\bfast[-\s]?radio[-\s]?bursts?\b/i,
   ],
   SN: [/\bSN\d{4}[A-Za-z]*\b/i, /\bSNe?\b/i, /\bsuper[-\s]?novae?\b/i],
-  AGN: [/\bAGN\b/i, /\bactive[-\s]?galactic\s+nuclei?\b/i],
   Neutrino: [
     /\bneutrinos?\b/i,
     /\bIceCube(?:-HAWC|-\d+)?\b/i,
