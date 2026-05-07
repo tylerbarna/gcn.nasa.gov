@@ -362,3 +362,19 @@ const eventTypeMatchers: Record<EventType, RegExp[]> = {
     /\bAT\d{4}[a-z]+\b/i,
   ],
 }
+
+export function parseEventTypeFromSubject(
+  subject: string
+): EventType[] | undefined {
+  for (const pattern of eventTypeMatchers.Retraction) {
+    if (pattern.test(subject)) return ['Retraction']
+  }
+
+  const matches = (Object.keys(eventTypeMatchers) as EventType[])
+    .filter((eventType) => eventType !== 'Retraction')
+    .filter((eventType) =>
+      eventTypeMatchers[eventType].some((pattern) => pattern.test(subject))
+    )
+
+  return matches.length ? matches : undefined
+}
