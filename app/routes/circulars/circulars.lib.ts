@@ -349,6 +349,7 @@ const eventTypeMatchers: Record<EventType, RegExp[]> = {
     /(?<!\S)EP(?=\s|:|$)/,
     /\bEPW?[-\s]?\d{6,8}[A-Z]{0,2}\b/i,
     /\bEP-XRT\b/i,
+    /\bEP-FXT\b/i,
     /\bX[-\s]?ray(?:\s+transient)?\b/i,
     /\bEinstein\s+Probe\b/i,
     /\bMAXI\s?J\d{4}[+\-]\d+/i,
@@ -358,8 +359,8 @@ const eventTypeMatchers: Record<EventType, RegExp[]> = {
   ],
   Afterglow: [/\bafterglows?\b/i],
   'Optical Transient': [
-    /\boptical\s+transient\b/i,
-    /\bZTF\d{2}[A-Za-z0-9]+\b/i,
+    /\boptical\b/i,
+    /\bZTF(?:\d{2}[A-Za-z0-9]+)?\b/i,
     /\bAT\d{4}[a-z]+\b/i,
   ],
 }

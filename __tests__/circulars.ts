@@ -1380,7 +1380,10 @@ describe('parseEventTypeFromSubject', () => {
   describe('FRB', () => {
     test('handles FRB subject', () => {
       const frbSubject = 'FRB 20250316A: FTW optical observations'
-      expect(parseEventTypeFromSubject(frbSubject)).toStrictEqual(['FRB'])
+      expect(parseEventTypeFromSubject(frbSubject)).toStrictEqual([
+        'FRB',
+        'Optical Transient',
+      ])
     })
   })
   describe('SN', () => {
@@ -1401,7 +1404,8 @@ describe('parseEventTypeFromSubject', () => {
   })
   describe('X-Ray Transient', () => {
     test('handles X-Ray Transient subject', () => {
-      const xraySubject = 'EP240913a: NOT optical upper limits'
+      const xraySubject =
+        'EP250828a: refined analysis of the EP-WXT and EP-FXT observations'
       expect(parseEventTypeFromSubject(xraySubject)).toStrictEqual([
         'X-Ray Transient',
       ])
@@ -1410,9 +1414,10 @@ describe('parseEventTypeFromSubject', () => {
   describe('Afterglow', () => {
     test('handles Afterglow subject', () => {
       const afterglowSubject =
-        'iPTF14yb: iPTF Discovery of an Optical Afterglow-like Transient'
+        'AT 2023sva: NOT observations of the ZTF candidate afterglow'
       expect(parseEventTypeFromSubject(afterglowSubject)).toStrictEqual([
         'Afterglow',
+        'Optical Transient',
       ])
     })
   })
