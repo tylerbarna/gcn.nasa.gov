@@ -1385,7 +1385,8 @@ describe('parseEventTypeFromSubject', () => {
   })
   describe('SN', () => {
     test('handles SN subject', () => {
-      const snSubject = 'XRF 080109 / SN 2008D: UKIRT JHK imaging'
+      const snSubject =
+        'Detailed Spectroscopic ID of SN 2008D (Transient in NGC 2770)'
       expect(parseEventTypeFromSubject(snSubject)).toStrictEqual(['SN'])
     })
   })
@@ -1425,7 +1426,7 @@ describe('parseEventTypeFromSubject', () => {
   })
   describe('Misc', () => {
     test('handles subject with no event type', () => {
-      const miscSubject = 'This is a subject with no event type'
+      const miscSubject = 'GRBlog: Compilation of all GCN Circ. data'
       expect(parseEventTypeFromSubject(miscSubject)).toStrictEqual(undefined)
     })
   })
