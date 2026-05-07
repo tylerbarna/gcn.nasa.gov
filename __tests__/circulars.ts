@@ -1354,63 +1354,79 @@ describe('parseEventTypeFromSubject', () => {
     test('handles retraction subject', () => {
       const retractionSubject =
         'LIGO/Virgo S190405ar: Retraction of a GW binary merger candidate'
-      expect(parseEventTypeFromSubject(retractionSubject)).toBe(['Retraction'])
+      expect(parseEventTypeFromSubject(retractionSubject)).toStrictEqual([
+        'Retraction',
+      ])
     })
   })
   describe('GRB', () => {
     test('handles GRB subject', () => {
       const grbSubject = 'GRB ABC000123: Swift UVOT follow-up'
-      expect(parseEventTypeFromSubject(grbSubject)).toBe(['GRB'])
+      expect(parseEventTypeFromSubject(grbSubject)).toStrictEqual(['GRB'])
     })
   })
   describe('GW', () => {
     test('handles GW subject', () => {
       const gwSubject = 'LIGO/Virgo/KAGRA S240601co: Updated Sky localization'
-      expect(parseEventTypeFromSubject(gwSubject)).toBe(['GW'])
+      expect(parseEventTypeFromSubject(gwSubject)).toStrictEqual(['GW'])
     })
   })
   describe('SGR', () => {
     test('handles SGR subject', () => {
       const sgrSubject = 'SGR1627-41, Refined IPN annulus location'
-      expect(parseEventTypeFromSubject(sgrSubject)).toBe(['SGR'])
+      expect(parseEventTypeFromSubject(sgrSubject)).toStrictEqual(['SGR'])
     })
   })
   describe('FRB', () => {
     test('handles FRB subject', () => {
       const frbSubject = 'FRB 20250316A: FTW optical observations'
-      expect(parseEventTypeFromSubject(frbSubject)).toBe(['FRB'])
+      expect(parseEventTypeFromSubject(frbSubject)).toStrictEqual(['FRB'])
     })
   })
   describe('SN', () => {
     test('handles SN subject', () => {
       const snSubject = 'XRF 080109 / SN 2008D: UKIRT JHK imaging'
-      expect(parseEventTypeFromSubject(snSubject)).toBe(['SN'])
+      expect(parseEventTypeFromSubject(snSubject)).toStrictEqual(['SN'])
     })
   })
   describe('Neutrino', () => {
     test('handles Neutrino subject', () => {
       const neutrinoSubject =
         'IceCube-200926A: No Candidate Counterparts from the Zwicky Transient Facility'
-      expect(parseEventTypeFromSubject(neutrinoSubject)).toBe(['Neutrino'])
+      expect(parseEventTypeFromSubject(neutrinoSubject)).toStrictEqual([
+        'Neutrino',
+      ])
     })
   })
   describe('X-Ray Transient', () => {
     test('handles X-Ray Transient subject', () => {
       const xraySubject = 'EP240913a: NOT optical upper limits'
-      expect(parseEventTypeFromSubject(xraySubject)).toBe(['X-Ray Transient'])
+      expect(parseEventTypeFromSubject(xraySubject)).toStrictEqual([
+        'X-Ray Transient',
+      ])
     })
   })
   describe('Afterglow', () => {
     test('handles Afterglow subject', () => {
       const afterglowSubject =
         'iPTF14yb: iPTF Discovery of an Optical Afterglow-like Transient'
-      expect(parseEventTypeFromSubject(afterglowSubject)).toBe(['Afterglow'])
+      expect(parseEventTypeFromSubject(afterglowSubject)).toStrictEqual([
+        'Afterglow',
+      ])
     })
   })
   describe('Optical Transient', () => {
     test('handles Optical Transient subject', () => {
       const otSubject = 'AT2023avj ZTF Candidate: Assy optical observations'
-      expect(parseEventTypeFromSubject(otSubject)).toBe(['Optical Transient'])
+      expect(parseEventTypeFromSubject(otSubject)).toStrictEqual([
+        'Optical Transient',
+      ])
+    })
+  })
+  describe('Misc', () => {
+    test('handles subject with no event type', () => {
+      const miscSubject = 'This is a subject with no event type'
+      expect(parseEventTypeFromSubject(miscSubject)).toStrictEqual(undefined)
     })
   })
 })
