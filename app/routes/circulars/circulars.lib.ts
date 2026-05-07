@@ -304,8 +304,7 @@ type EventType =
 
 const eventTypeMatchers: Record<EventType, RegExp[]> = {
   Retraction: [
-    /\bRetraction\b/i,
-    /\bRetractions\b/i,
+    /\bRetractions?\b/i,
     /\bnot\s+a\s+(?:GRB|GW|FRB|SN|SGR|neutrino)\b/i,
     /\bprobably\s+not\s+a\b/i,
     /\bis\s+not\b/i,
