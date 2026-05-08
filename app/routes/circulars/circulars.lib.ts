@@ -352,7 +352,7 @@ const eventTypeMatchers: Record<EventType, RegExp[]> = {
     /\bEP-FXT\b/i,
     /\bX[-\s]?ray(?:\s+transient)?\b/i,
     /\bEinstein\s+Probe\b/i,
-    /\bMAXI\s?J\d{4}[+\-]\d+/i,
+    /\bMAXI\s?J\d{4}[+-]\d+/i,
     /\bXRT\b/i,
     /\bXRF\b/i,
     /\bNuEM\b/i,
