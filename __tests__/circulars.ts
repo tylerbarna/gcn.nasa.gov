@@ -1350,89 +1350,280 @@ describe('subjectIsValid', () => {
 
 // Tests the event type tagging with eventTypeMatchers and parseEventTypeFromSubject
 describe('parseEventTypeFromSubject', () => {
-  describe('Retraction', () => {
-    test('handles retraction subject', () => {
-      const retractionSubject =
-        'LIGO/Virgo S190405ar: Retraction of a GW binary merger candidate'
-      expect(parseEventTypeFromSubject(retractionSubject)).toStrictEqual([
-        'Retraction',
-      ])
-    })
-  })
-  describe('GRB', () => {
-    test('handles GRB subject', () => {
-      const grbSubject = 'GRB ABC000123: Swift UVOT follow-up'
-      expect(parseEventTypeFromSubject(grbSubject)).toStrictEqual(['GRB'])
-    })
-  })
-  describe('GW', () => {
-    test('handles GW subject', () => {
-      const gwSubject = 'LIGO/Virgo/KAGRA S240601co: Updated Sky localization'
-      expect(parseEventTypeFromSubject(gwSubject)).toStrictEqual(['GW'])
-    })
-  })
-  describe('SGR', () => {
-    test('handles SGR subject', () => {
-      const sgrSubject = 'SGR1627-41, Refined IPN annulus location'
-      expect(parseEventTypeFromSubject(sgrSubject)).toStrictEqual(['SGR'])
-    })
-  })
-  describe('FRB', () => {
-    test('handles FRB subject', () => {
-      const frbSubject = 'FRB 20250316A: FTW optical observations'
-      expect(parseEventTypeFromSubject(frbSubject)).toStrictEqual([
-        'FRB',
-        'Optical Transient',
-      ])
-    })
-  })
-  describe('SN', () => {
-    test('handles SN subject', () => {
-      const snSubject =
-        'Detailed Spectroscopic ID of SN 2008D (Transient in NGC 2770)'
-      expect(parseEventTypeFromSubject(snSubject)).toStrictEqual(['SN'])
-    })
-  })
-  describe('Neutrino', () => {
-    test('handles Neutrino subject', () => {
-      const neutrinoSubject =
-        'IceCube-200926A: No Candidate Counterparts from the Zwicky Transient Facility'
-      expect(parseEventTypeFromSubject(neutrinoSubject)).toStrictEqual([
-        'Neutrino',
-      ])
-    })
-  })
-  describe('X-Ray Transient', () => {
-    test('handles X-Ray Transient subject', () => {
-      const xraySubject =
-        'EP250828a: refined analysis of the EP-WXT and EP-FXT observations'
-      expect(parseEventTypeFromSubject(xraySubject)).toStrictEqual([
-        'X-Ray Transient',
-      ])
-    })
-  })
-  describe('Afterglow', () => {
-    test('handles Afterglow subject', () => {
-      const afterglowSubject =
-        'AT 2023sva: NOT observations of the ZTF candidate afterglow'
-      expect(parseEventTypeFromSubject(afterglowSubject)).toStrictEqual([
-        'Afterglow',
-        'Optical Transient',
-      ])
-    })
-  })
-  describe('Optical Transient', () => {
-    test('handles Optical Transient subject', () => {
-      const otSubject = 'AT2023avj ZTF Candidate: Assy optical observations'
-      expect(parseEventTypeFromSubject(otSubject)).toStrictEqual([
-        'Optical Transient',
-      ])
-    })
-  })
-  describe('Misc', () => {
-    test('handles subject with no event type', () => {
-      const miscSubject = 'GRBlog: Compilation of all GCN Circ. data'
-      expect(parseEventTypeFromSubject(miscSubject)).toStrictEqual(undefined)
-    })
+  const cases = [
+    {
+      name: 'Retraction pattern: \\bRetractions?\\b',
+      subject: 'GRB 220311A: MASTER OT retraction',
+      expected: ['Retraction'],
+    },
+    {
+      name: 'Retraction pattern: \\bnot\\s+a\\s+(?:GRB|GW|FRB|SN|SGR|neutrino)\\b',
+      subject: 'Swift Trigger 931484 is not a GRB',
+      expected: ['Retraction'],
+    },
+    {
+      name: 'Retraction pattern: \\bprobably\\s+not\\s+a\\b',
+      subject: 'BAT GRB 060204C is probably not a GRB',
+      expected: ['Retraction'],
+    },
+    {
+      name: 'Retraction pattern: \\bis\\s+not\\b',
+      subject:
+        'Fermi Gamma-ray Burst Monitor trigger 757464861/250101954 is not a GRB',
+      expected: ['Retraction'],
+    },
+    {
+      name: 'GRB pattern: \\bGRB\\d{6}[A-Z]?\\b',
+      subject: 'IPN localization of GRB000801',
+      expected: ['GRB'],
+    },
+    {
+      name: 'GRB pattern: \\bGRBs?\\b',
+      subject: 'GRB 100213B: Enhanced Swift-XRT position',
+      expected: ['GRB', 'X-Ray Transient'],
+    },
+    {
+      name: 'GRB pattern: \\bgamma[-\\s]?ray[-\\s]?bursts?\\b',
+      subject: 'GRB 171230A CALET Gamma-Ray Burst Monitor detection',
+      expected: ['GRB'],
+    },
+    {
+      name: 'GRB pattern: \\bFermi(?:\\s?(?:GBM|LAT)|\\d{9})?\\b',
+      subject: 'GRB 230516A: Fermi GBM Final Real-time Localization',
+      expected: ['GRB'],
+    },
+    {
+      name: 'GRB pattern: \\bSwift(?:[/-](?:BAT|XRT|UVOT))?\\b',
+      subject:
+        'LIGO/Virgo S190930t: Swift J221951-484240 optical photometry of Chilescope observatory',
+      expected: ['GRB', 'GW', 'Optical Transient'],
+    },
+    {
+      name: 'GRB pattern: \\bSVOM\\b',
+      subject: 'EP260214b: SVOM/VT optical observation',
+      expected: ['GRB', 'X-Ray Transient', 'Optical Transient'],
+    },
+    {
+      name: 'GRB pattern: \\bINTEGRAL\\b',
+      subject: 'INTEGRAL observations of the events in the GWTC-1 catalog',
+      expected: ['GRB'],
+    },
+    {
+      name: 'GRB pattern: \\bXRF\\d{6}[A-Z]?\\b',
+      subject: 'XRF040812: possible afterglow second Chandra observation',
+      expected: ['GRB', 'Afterglow'],
+    },
+    {
+      name: 'GRB pattern: \\bMASTER\\b',
+      subject: 'GRB 181202A: Global MASTER-Net optical observations',
+      expected: ['GRB', 'Optical Transient'],
+    },
+    {
+      name: 'GRB pattern: \\bHAWC\\b',
+      subject: 'IceCube-220306A: No significant detection in HAWC',
+      expected: ['GRB', 'Neutrino'],
+    },
+    {
+      name: 'GRB pattern: \\bHETE\\b',
+      subject: 'GRB040511 (=H3218):  A Long GRB Localized by HETE WXM and SXC',
+      expected: ['GRB'],
+    },
+    {
+      name: 'GRB pattern: \\bKONUS\\b',
+      subject: 'Konus-Wind observation of GRB 190106A',
+      expected: ['GRB'],
+    },
+    {
+      name: 'GRB pattern: \\bAstroSat\\b',
+      subject: 'GRB 201104A: AstroSat CZTI detection',
+      expected: ['GRB'],
+    },
+    {
+      name: 'GW pattern: \\bGW\\d+\\b',
+      subject:
+        'LIGO/Virgo GW170817: Further Hubble Space Telescope observations',
+      expected: ['GW'],
+    },
+    {
+      name: 'GW pattern: \\bGWs?\\b',
+      subject:
+        'LIGO/Virgo S191129u: Identification of a GW compact binary merger candidate',
+      expected: ['GW'],
+    },
+    {
+      name: 'GW pattern: \\bgravitational[-\\s]?waves?\\b',
+      subject:
+        'LIGO/Virgo G298936: Updated localization from gravitational-wave data',
+      expected: ['GW'],
+    },
+    {
+      name: 'GW pattern: \\bLIGO\\b',
+      subject:
+        'LIGO/Virgo G184098: ongoing Pan-STARRS search for optical transients',
+      expected: ['GW', 'Optical Transient'],
+    },
+    {
+      name: 'GW pattern: \\bVirgo\\b',
+      subject:
+        'LIGO/Virgo S191213g : SAO 1-m optical observation of AT2019wxt (PS19hgw)',
+      expected: ['GW', 'Optical Transient'],
+    },
+    {
+      name: 'GW pattern: \\bKAGRA\\b',
+      subject:
+        'LIGO/Virgo/KAGRA S250206dm: continued in SOAR galaxy targeted observations and identification of one possible transient',
+      expected: ['GW'],
+    },
+    {
+      name: 'GW pattern: \\bS\\d{6}[a-z]+\\b',
+      subject: 'LIGO/Virgo S200208q: Not observable by CALET',
+      expected: ['GW'],
+    },
+    {
+      name: 'SGR pattern: \\bSGR\\S*',
+      subject:
+        'ICSP VLF observation of the signatures of SGR/AXP 1E1547.0-5408 bursts',
+      expected: ['SGR'],
+    },
+    {
+      name: 'SGR pattern: \\bsoft[-\\s]?gamma[-\\s]?repeaters?\\b',
+      subject: 'New Soft Gamma Repeater 0501+4516 was GRB 080822',
+      expected: ['GRB', 'SGR'],
+    },
+    {
+      name: 'FRB pattern: \\bFRB\\s?\\d{6,8}[A-Za-z]?\\b',
+      subject:
+        'FRB 20250206A: Nondetection of Repeating Bursts from FRB 20250206A with FAST',
+      expected: ['FRB'],
+    },
+    {
+      name: 'FRB pattern: \\bFRBs?\\b',
+      subject: 'FRB 181228: Global MASTER Net  optical inspection',
+      expected: ['GRB', 'FRB', 'Optical Transient'],
+    },
+    {
+      name: 'FRB pattern: \\bfast[-\\s]?radio[-\\s]?bursts?\\b',
+      subject:
+        'FRB 180725A: MASTER optical observations of the Fast Radio Burst error box',
+      expected: ['GRB', 'FRB', 'Optical Transient'],
+    },
+    {
+      name: 'SN pattern: \\bSN\\d{4}[A-Za-z]*\\b',
+      subject: 'SN2002ap (SN/GRB?) Echelle spectra',
+      expected: ['GRB', 'SN'],
+    },
+    {
+      name: 'SN pattern: \\bSNe?\\b',
+      subject: 'Type Ib/c SN2002ap (SN/GRB?)',
+      expected: ['GRB', 'SN'],
+    },
+    {
+      name: 'SN pattern: \\bsuper[-\\s]?novae?\\b',
+      subject: 'Fwd: GRB 091003: Possible Supernova Component Retraction',
+      expected: ['Retraction'],
+    },
+    {
+      name: 'Neutrino pattern: \\bneutrinos?\\b',
+      subject:
+        'LIGO/Virgo S190923y: No neutrino candidates at Pierre Auger Observatory',
+      expected: ['GW', 'Neutrino'],
+    },
+    {
+      name: 'Neutrino pattern: \\bIceCube(?:-HAWC|-\\d+)?\\b',
+      subject: 'IceCube-240327B: GRANDMA observations of 4FGL J0555.9+0030',
+      expected: ['Neutrino'],
+    },
+    {
+      name: 'Neutrino pattern: \\bANTARES\\b',
+      subject:
+        'Fermi-LAT-ANTARES 220121a: upper limits from a search for coincident neutrinos with IceCube',
+      expected: ['GRB', 'Neutrino'],
+    },
+    {
+      name: 'Neutrino pattern: \\bKM3NeT\\b',
+      subject:
+        'LIGO/Virgo S200114f: Constraints on a CCSN origin from KM3NeT MeV neutrino search.',
+      expected: ['GW', 'Neutrino'],
+    },
+    {
+      name: 'X-Ray Transient pattern: (?<!\\S)EP(?=\\s|:|$)',
+      subject:
+        'FRB 20250316A: Kinder optical upper limits of the Einstein Probe candidate X-ray source  EP J120944.2+585060 ',
+      expected: ['FRB', 'X-Ray Transient', 'Optical Transient'],
+    },
+    {
+      name: 'X-Ray Transient pattern: \\bEPW?[-\\s]?\\d{6,8}[A-Z]{0,2}\\b',
+      subject:
+        'EP250404a / GRB 250404A: Montarrenti Observatory optical observations ',
+      expected: ['GRB', 'X-Ray Transient', 'Optical Transient'],
+    },
+    {
+      name: 'X-Ray Transient pattern: \\bEP-WXT\\b',
+      subject: 'The EP-WXT trigger 01709247525 is not a real source',
+      expected: ['Retraction'],
+    },
+    {
+      name: 'X-Ray Transient pattern: \\bEP-FXT\\b',
+      subject:
+        'EP240413a: possible detection of the X-ray emission with EP-FXT after 14 hours',
+      expected: ['X-Ray Transient'],
+    },
+    {
+      name: 'X-Ray Transient pattern: \\bX[-\\s]?ray(?:\\s+transient)?\\b',
+      subject:
+        'GRB 231129C: PROMPT optical upper limits for the MAXI/GSC X-ray counterpart and the MASTER afterglow candidate ',
+      expected: ['GRB', 'X-Ray Transient', 'Afterglow', 'Optical Transient'],
+    },
+    {
+      name: 'X-Ray Transient pattern: \\bEinstein\\s+Probe\\b',
+      subject: 'EP251118a: Einstein Probe detected of a fast X-ray transient',
+      expected: ['X-Ray Transient'],
+    },
+    {
+      name: 'X-Ray Transient pattern: \\bMAXI\\s?J\\d{4}[+\\-]\\d+',
+      subject: 'GRB 251023B / MAXI J0451+122: MAXI/GSC detection',
+      expected: ['GRB', 'X-Ray Transient'],
+    },
+    {
+      name: 'X-Ray Transient pattern: \\bXRT\\b',
+      subject: 'GRB 160912A: Swift-XRT refined Analysis',
+      expected: ['GRB', 'X-Ray Transient'],
+    },
+    {
+      name: 'X-Ray Transient pattern: \\bXRF\\b',
+      subject: 'Early OT detection of XRF in NGC 2770 in Asiago frames',
+      expected: ['X-Ray Transient'],
+    },
+    {
+      name: 'X-Ray Transient pattern: \\bNuEM\\b',
+      subject:
+        'AMON Coincidence Alert from the sub-threshold IceCube-HAWC search NuEm-240118A: correction on the localization',
+      expected: ['GRB', 'Neutrino', 'X-Ray Transient'],
+    },
+    {
+      name: 'Afterglow pattern: \\bafterglows?\\b',
+      subject: 'GRB 041006 Optical afterglow observations',
+      expected: ['GRB', 'Afterglow', 'Optical Transient'],
+    },
+    {
+      name: 'Optical Transient pattern: \\boptical\\b',
+      subject: 'GRB 131014A: RATIR Optical/NIR Afterglow Confirmation',
+      expected: ['GRB', 'Afterglow', 'Optical Transient'],
+    },
+    {
+      name: 'Optical Transient pattern: \\bZTF(?:\\d{2}[A-Za-z0-9]+)?\\b',
+      subject: 'ZTF22aaajecp/AT2022cmc: ATCA detection',
+      expected: ['Optical Transient'],
+    },
+    {
+      name: 'Optical Transient pattern: \\bAT\\d{4}[a-z]+\\b',
+      subject:
+        'LIGO/Virgo S190814bv: Further Pan-STARRS z-band observations and AT2019npv photometry',
+      expected: ['GW', 'Optical Transient'],
+    },
+  ]
+
+  test.each(cases)('%s', ({ subject, expected }) => {
+    expect(parseEventTypeFromSubject(subject)).toStrictEqual(expected)
   })
 })
