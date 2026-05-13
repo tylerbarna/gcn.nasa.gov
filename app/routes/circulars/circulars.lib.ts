@@ -354,7 +354,10 @@ const eventTypeMatchers: Record<EventType, RegExp[]> = {
     /\bMAXI\s?J\d{4}[+-]\d+/i,
     /\bXRT\b/i,
     /\bXRF\b/i,
-    /\bNuEM\b/i,
+    /\bChandra\b/i,
+    /\bXMM\b/i,
+    /\bNICER\b/i,
+    /\bNuSTAR\b/i,
   ],
   Afterglow: [/\bafterglows?\b/i],
   'Optical Transient': [

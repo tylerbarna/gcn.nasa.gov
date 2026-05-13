@@ -1411,7 +1411,7 @@ describe('parseEventTypeFromSubject', () => {
     {
       name: 'GRB pattern: \\bXRF\\d{6}[A-Z]?\\b',
       subject: 'XRF040812: possible afterglow second Chandra observation',
-      expected: ['GRB', 'Afterglow'],
+      expected: ['GRB', 'X-ray Transient', 'Afterglow'],
     },
     {
       name: 'GRB pattern: \\bHAWC\\b',
@@ -1588,6 +1588,26 @@ describe('parseEventTypeFromSubject', () => {
       name: 'X-ray Transient pattern: \\bXRF\\b',
       subject: 'Early OT detection of XRF in NGC 2770 in Asiago frames',
       expected: ['X-ray Transient', 'Optical Transient'],
+    },
+    {
+      name: 'X-ray Transient pattern: \\bChandra\\b',
+      subject: 'EP250304a: Chandra detection',
+      expected: ['X-ray Transient'],
+    },
+    {
+      name: 'X-ray Transient pattern: \\bXMM\\b',
+      subject: 'XMM-Newton observation of EP240426a',
+      expected: ['X-ray Transient'],
+    },
+    {
+      name: 'X-ray Transient pattern: \\bNICER\\b',
+      subject: 'GRB 221009A: NICER follow-up observations',
+      expected: ['GRB', 'X-ray Transient'],
+    },
+    {
+      name: 'X-ray Transient pattern: \\bNuSTAR\\b',
+      subject: 'GRB 221009A: NuSTAR follow-up observations',
+      expected: ['GRB', 'X-ray Transient'],
     },
     {
       name: 'Afterglow pattern: \\bafterglows?\\b',
