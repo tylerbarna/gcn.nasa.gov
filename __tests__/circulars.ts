@@ -1541,6 +1541,16 @@ describe('parseEventTypeFromSubject', () => {
       expected: ['GW', 'Neutrino'],
     },
     {
+      name: 'Neutrino pattern: \\bSuper-Kamiokande\\b',
+      subject: 'Super-Kamiokande: Neutrino search for SN2023ixf',
+      expected: ['SN', 'Neutrino'],
+    },
+    {
+      name: 'Neutrino pattern: \\bSNEWS2\\b',
+      subject: 'Hypothetical SNEWS2 Circular',
+      expected: ['Neutrino'],
+    },
+    {
       name: 'X-ray Transient pattern: (?<!\\S)EP(?=\\s|:|$)',
       subject:
         'FRB 20250316A: Kinder optical upper limits of the Einstein Probe candidate X-ray source  EP J120944.2+585060 ',

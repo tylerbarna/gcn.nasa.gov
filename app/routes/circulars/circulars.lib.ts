@@ -343,6 +343,8 @@ const eventTypeMatchers: Record<EventType, RegExp[]> = {
     /\bIceCube(?:-HAWC|-\d+)?\b/i,
     /\bANTARES\b/i,
     /\bKM3NeT\b/i,
+    /\bSuper-Kamiokande\b/i,
+    /\bSNEWS2\b/i,
   ],
   'X-ray Transient': [
     /(?<!\S)EP(?=\s|:|$)/,
