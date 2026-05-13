@@ -1414,11 +1414,6 @@ describe('parseEventTypeFromSubject', () => {
       expected: ['GRB', 'Afterglow'],
     },
     {
-      name: 'GRB pattern: \\bMASTER\\b',
-      subject: 'GRB 181202A: Global MASTER-Net optical observations',
-      expected: ['GRB', 'Optical Transient'],
-    },
-    {
       name: 'GRB pattern: \\bHAWC\\b',
       subject: 'IceCube-220306A: No significant detection in HAWC',
       expected: ['GRB', 'Neutrino'],
@@ -1611,14 +1606,30 @@ describe('parseEventTypeFromSubject', () => {
       expected: ['GRB', 'Afterglow', 'Optical Transient'],
     },
     {
+      name: 'Optical Transient pattern: \\bAT\\d{4}[a-z]+\\b',
+      subject:
+        'LIGO/Virgo S190814bv: Further Pan-STARRS z-band observations and AT2019npv photometry',
+      expected: ['GW', 'Optical Transient'],
+    },
+    {
       name: 'Optical Transient pattern: \\bZTF(?:\\d{2}[A-Za-z0-9]+)?\\b',
       subject: 'ZTF22aaajecp/AT2022cmc: ATCA detection',
       expected: ['Optical Transient'],
     },
     {
-      name: 'Optical Transient pattern: \\bAT\\d{4}[a-z]+\\b',
+      name: 'Optical Transient pattern: \\bPan-STARRS\\b',
+      subject: 'EP251124a: Pan-STARRS ri-band imaging and photometry',
+      expected: ['X-ray Transient', 'Optical Transient'],
+    },
+    {
+      name: 'Optical Transient pattern: \\bMASTER\\b',
+      subject: 'GRB 181202A: Global MASTER-Net optical observations',
+      expected: ['GRB', 'Optical Transient'],
+    },
+    {
+      name: 'Optical Transient pattern: \\bRubin\\b',
       subject:
-        'LIGO/Virgo S190814bv: Further Pan-STARRS z-band observations and AT2019npv photometry',
+        'LIGO/Virgo/KAGRA S251112cm: Candidates from the NSF-DOE Vera C. Rubin Observatory',
       expected: ['GW', 'Optical Transient'],
     },
     {
