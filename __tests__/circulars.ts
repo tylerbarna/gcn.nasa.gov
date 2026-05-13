@@ -1592,7 +1592,7 @@ describe('parseEventTypeFromSubject', () => {
     {
       name: 'X-Ray Transient pattern: \\bXRF\\b',
       subject: 'Early OT detection of XRF in NGC 2770 in Asiago frames',
-      expected: ['X-Ray Transient'],
+      expected: ['X-Ray Transient', 'Optical Transient'],
     },
     {
       name: 'X-Ray Transient pattern: \\bNuEM\\b',
