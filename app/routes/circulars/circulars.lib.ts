@@ -297,7 +297,7 @@ type EventType =
   | 'FRB'
   | 'SN'
   | 'Neutrino'
-  | 'X-Ray Transient'
+  | 'X-ray Transient'
   | 'Afterglow'
   | 'Optical Transient'
 
@@ -344,7 +344,7 @@ const eventTypeMatchers: Record<EventType, RegExp[]> = {
     /\bANTARES\b/i,
     /\bKM3NeT\b/i,
   ],
-  'X-Ray Transient': [
+  'X-ray Transient': [
     /(?<!\S)EP(?=\s|:|$)/,
     /\bEPW?[-\s]?\d{6,8}[A-Z]{0,2}\b/i,
     /\bEP-XRT\b/i,

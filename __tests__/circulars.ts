@@ -1380,7 +1380,7 @@ describe('parseEventTypeFromSubject', () => {
     {
       name: 'GRB pattern: \\bGRBs?\\b',
       subject: 'GRB 100213B: Enhanced Swift-XRT position',
-      expected: ['GRB', 'X-Ray Transient'],
+      expected: ['GRB', 'X-ray Transient'],
     },
     {
       name: 'GRB pattern: \\bgamma[-\\s]?ray[-\\s]?bursts?\\b',
@@ -1401,7 +1401,7 @@ describe('parseEventTypeFromSubject', () => {
     {
       name: 'GRB pattern: \\bSVOM\\b',
       subject: 'EP260214b: SVOM/VT optical observation',
-      expected: ['GRB', 'X-Ray Transient', 'Optical Transient'],
+      expected: ['GRB', 'X-ray Transient', 'Optical Transient'],
     },
     {
       name: 'GRB pattern: \\bINTEGRAL\\b',
@@ -1546,59 +1546,59 @@ describe('parseEventTypeFromSubject', () => {
       expected: ['GW', 'Neutrino'],
     },
     {
-      name: 'X-Ray Transient pattern: (?<!\\S)EP(?=\\s|:|$)',
+      name: 'X-ray Transient pattern: (?<!\\S)EP(?=\\s|:|$)',
       subject:
         'FRB 20250316A: Kinder optical upper limits of the Einstein Probe candidate X-ray source  EP J120944.2+585060 ',
-      expected: ['FRB', 'X-Ray Transient', 'Optical Transient'],
+      expected: ['FRB', 'X-ray Transient', 'Optical Transient'],
     },
     {
-      name: 'X-Ray Transient pattern: \\bEPW?[-\\s]?\\d{6,8}[A-Z]{0,2}\\b',
+      name: 'X-ray Transient pattern: \\bEPW?[-\\s]?\\d{6,8}[A-Z]{0,2}\\b',
       subject:
         'EP250404a / GRB 250404A: Montarrenti Observatory optical observations ',
-      expected: ['GRB', 'X-Ray Transient', 'Optical Transient'],
+      expected: ['GRB', 'X-ray Transient', 'Optical Transient'],
     },
     {
-      name: 'X-Ray Transient pattern: \\bEP-WXT\\b',
+      name: 'X-ray Transient pattern: \\bEP-WXT\\b',
       subject: 'The EP-WXT trigger 01709247525 is not a real source',
       expected: ['Retraction'],
     },
     {
-      name: 'X-Ray Transient pattern: \\bEP-FXT\\b',
+      name: 'X-ray Transient pattern: \\bEP-FXT\\b',
       subject:
         'EP240413a: possible detection of the X-ray emission with EP-FXT after 14 hours',
-      expected: ['X-Ray Transient'],
+      expected: ['X-ray Transient'],
     },
     {
-      name: 'X-Ray Transient pattern: \\bX[-\\s]?ray(?:\\s+transient)?\\b',
+      name: 'X-ray Transient pattern: \\bX[-\\s]?ray(?:\\s+transient)?\\b',
       subject:
         'GRB 231129C: PROMPT optical upper limits for the MAXI/GSC X-ray counterpart and the MASTER afterglow candidate ',
-      expected: ['GRB', 'X-Ray Transient', 'Afterglow', 'Optical Transient'],
+      expected: ['GRB', 'X-ray Transient', 'Afterglow', 'Optical Transient'],
     },
     {
-      name: 'X-Ray Transient pattern: \\bEinstein\\s+Probe\\b',
+      name: 'X-ray Transient pattern: \\bEinstein\\s+Probe\\b',
       subject: 'EP251118a: Einstein Probe detected of a fast X-ray transient',
-      expected: ['X-Ray Transient'],
+      expected: ['X-ray Transient'],
     },
     {
-      name: 'X-Ray Transient pattern: \\bMAXI\\s?J\\d{4}[+\\-]\\d+',
+      name: 'X-ray Transient pattern: \\bMAXI\\s?J\\d{4}[+\\-]\\d+',
       subject: 'GRB 251023B / MAXI J0451+122: MAXI/GSC detection',
-      expected: ['GRB', 'X-Ray Transient'],
+      expected: ['GRB', 'X-ray Transient'],
     },
     {
-      name: 'X-Ray Transient pattern: \\bXRT\\b',
+      name: 'X-ray Transient pattern: \\bXRT\\b',
       subject: 'GRB 160912A: Swift-XRT refined Analysis',
-      expected: ['GRB', 'X-Ray Transient'],
+      expected: ['GRB', 'X-ray Transient'],
     },
     {
-      name: 'X-Ray Transient pattern: \\bXRF\\b',
+      name: 'X-ray Transient pattern: \\bXRF\\b',
       subject: 'Early OT detection of XRF in NGC 2770 in Asiago frames',
-      expected: ['X-Ray Transient', 'Optical Transient'],
+      expected: ['X-ray Transient', 'Optical Transient'],
     },
     {
-      name: 'X-Ray Transient pattern: \\bNuEM\\b',
+      name: 'X-ray Transient pattern: \\bNuEM\\b',
       subject:
         'AMON Coincidence Alert from the sub-threshold IceCube-HAWC search NuEm-240118A: correction on the localization',
-      expected: ['GRB', 'Neutrino', 'X-Ray Transient'],
+      expected: ['GRB', 'Neutrino', 'X-ray Transient'],
     },
     {
       name: 'Afterglow pattern: \\bafterglows?\\b',
