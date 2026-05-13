@@ -336,6 +336,8 @@ const eventTypeMatchers: Record<EventType, RegExp[]> = {
     /\bFRB\s?\d{6,8}[A-Za-z]?\b/i,
     /\bFRBs?\b/i,
     /\bfast[-\s]?radio[-\s]?bursts?\b/i,
+    /\bCHIIME\b/i,
+    /\bDSA-110\b/i,
   ],
   SN: [/\bSN\d{4}[A-Za-z]*\b/i, /\bSNe?\b/i, /\bsuper[-\s]?novae?\b/i],
   Neutrino: [

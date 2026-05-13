@@ -1503,6 +1503,17 @@ describe('parseEventTypeFromSubject', () => {
       expected: ['FRB', 'Optical Transient'],
     },
     {
+      name: 'FRB pattern: \\bCHIME\\b',
+      subject:
+        'Geocentric time correction for Insight-HXMT detection of the x-ray counterpart of the FRB by CHIME and STARE2 from SGR 1935+2154',
+      expected: ['SGR', 'FRB', 'X-ray Transient'],
+    },
+    {
+      name: 'FRB pattern: \\bDSA-110\\b',
+      subject: 'Hypothetical DSA-110 Circular',
+      expected: ['FRB'],
+    },
+    {
       name: 'SN pattern: \\bSN\\d{4}[A-Za-z]*\\b',
       subject: 'SN2002ap (SN/GRB?) Echelle spectra',
       expected: ['GRB', 'SN'],
