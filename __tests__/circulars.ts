@@ -1621,6 +1621,11 @@ describe('parseEventTypeFromSubject', () => {
         'LIGO/Virgo S190814bv: Further Pan-STARRS z-band observations and AT2019npv photometry',
       expected: ['GW', 'Optical Transient'],
     },
+    {
+      name: 'Misc pattern',
+      subject: 'This is a test subject for a miscellaneous event type',
+      expected: ['Misc'],
+    },
   ]
 
   test.each(cases)('%s', ({ subject, expected }) => {

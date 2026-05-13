@@ -360,14 +360,17 @@ const eventTypeMatchers: Record<EventType, RegExp[]> = {
   Afterglow: [/\bafterglows?\b/i],
   'Optical Transient': [
     /\boptical\b/i,
-    /\bZTF(?:\d{2}[A-Za-z0-9]+)?\b/i,
     /\bAT\d{4}[a-z]+\b/i,
+    /\bZTF(?:\d{2}[A-Za-z0-9]+)?\b/i,
+    /\bMASTER\b/i,
+    /\bPan-STARRS\b/i,
+    /\bRubin\b/i,
   ],
 }
 
 export function parseEventTypeFromSubject(
   subject: string
-): EventType[] | undefined {
+): EventType[] | ['Misc'] {
   for (const pattern of eventTypeMatchers.Retraction) {
     if (pattern.test(subject)) return ['Retraction']
   }
@@ -378,5 +381,5 @@ export function parseEventTypeFromSubject(
       eventTypeMatchers[eventType].some((pattern) => pattern.test(subject))
     )
 
-  return matches.length ? matches : undefined
+  return matches.length ? matches : ['Misc']
 }
