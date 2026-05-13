@@ -1437,7 +1437,7 @@ describe('parseEventTypeFromSubject', () => {
       name: 'GW pattern: \\bGW\\d+\\b',
       subject:
         'LIGO/Virgo GW170817: Further Hubble Space Telescope observations',
-      expected: ['GW'],
+      expected: ['GW', 'Afterglow', 'Optical Transient'],
     },
     {
       name: 'GW pattern: \\bGWs?\\b',
