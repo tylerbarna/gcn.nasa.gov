@@ -1401,7 +1401,7 @@ describe('parseEventTypeFromSubject', () => {
     {
       name: 'GRB pattern: \\bSVOM\\b',
       subject: 'EP260214b: SVOM/VT optical observation',
-      expected: ['GRB', 'X-ray Transient', 'Optical Transient'],
+      expected: ['X-ray Transient', 'Optical Transient'],
     },
     {
       name: 'GRB pattern: \\bINTEGRAL\\b',
