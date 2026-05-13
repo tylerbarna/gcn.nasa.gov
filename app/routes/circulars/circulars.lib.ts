@@ -329,6 +329,7 @@ const eventTypeMatchers: Record<EventType, RegExp[]> = {
     /\bVirgo\b/i,
     /\bKAGRA\b/i,
     /\bS\d{6}[a-z]+\b/i,
+    /\bGWTC-\d+\b/i,
   ],
   SGR: [/\bSGR\S*/i, /\bsoft[-\s]?gamma[-\s]?repeaters?\b/i],
   FRB: [

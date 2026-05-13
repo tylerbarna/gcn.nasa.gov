@@ -1406,7 +1406,7 @@ describe('parseEventTypeFromSubject', () => {
     {
       name: 'GRB pattern: \\bINTEGRAL\\b',
       subject: 'INTEGRAL observations of the events in the GWTC-1 catalog',
-      expected: ['GRB'],
+      expected: ['GRB', 'GW'],
     },
     {
       name: 'GRB pattern: \\bXRF\\d{6}[A-Z]?\\b',
