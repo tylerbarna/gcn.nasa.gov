@@ -1499,13 +1499,13 @@ describe('parseEventTypeFromSubject', () => {
     {
       name: 'FRB pattern: \\bFRBs?\\b',
       subject: 'FRB 181228: Global MASTER Net  optical inspection',
-      expected: ['GRB', 'FRB', 'Optical Transient'],
+      expected: ['FRB', 'Optical Transient'],
     },
     {
       name: 'FRB pattern: \\bfast[-\\s]?radio[-\\s]?bursts?\\b',
       subject:
         'FRB 180725A: MASTER optical observations of the Fast Radio Burst error box',
-      expected: ['GRB', 'FRB', 'Optical Transient'],
+      expected: ['FRB', 'Optical Transient'],
     },
     {
       name: 'SN pattern: \\bSN\\d{4}[A-Za-z]*\\b',
