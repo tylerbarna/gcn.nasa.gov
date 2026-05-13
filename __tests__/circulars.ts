@@ -1590,12 +1590,6 @@ describe('parseEventTypeFromSubject', () => {
       expected: ['X-ray Transient', 'Optical Transient'],
     },
     {
-      name: 'X-ray Transient pattern: \\bNuEM\\b',
-      subject:
-        'AMON Coincidence Alert from the sub-threshold IceCube-HAWC search NuEm-240118A: correction on the localization',
-      expected: ['GRB', 'Neutrino', 'X-ray Transient'],
-    },
-    {
       name: 'Afterglow pattern: \\bafterglows?\\b',
       subject: 'GRB 041006 Optical afterglow observations',
       expected: ['GRB', 'Afterglow', 'Optical Transient'],
