@@ -317,7 +317,7 @@ const eventTypeMatchers: Record<EventType, RegExp[]> = {
     /\bSVOM\b/i,
     /\bINTEGRAL\b/i,
     /\bXRF\d{6}[A-Z]?\b/i,
-    /\bHAWC\b/i,
+
     /\bHETE\b/i,
     /\bKONUS\b/i,
     /\bAstroSat\b/i,

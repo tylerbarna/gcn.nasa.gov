@@ -1416,7 +1416,7 @@ describe('parseEventTypeFromSubject', () => {
     {
       name: 'GRB pattern: \\bHAWC\\b',
       subject: 'IceCube-220306A: No significant detection in HAWC',
-      expected: ['GRB', 'Neutrino'],
+      expected: ['Neutrino'],
     },
     {
       name: 'GRB pattern: \\bHETE\\b',
