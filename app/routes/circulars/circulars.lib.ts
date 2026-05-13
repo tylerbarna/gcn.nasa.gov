@@ -372,6 +372,8 @@ const eventTypeMatchers: Record<EventType, RegExp[]> = {
     /\bMASTER\b/i,
     /\bPan-STARRS\b/i,
     /\bRubin\b/i,
+    /\bSVOM\/VT\b/i,
+    /\bSVOM\/C-GFT\b/i,
   ],
 }
 

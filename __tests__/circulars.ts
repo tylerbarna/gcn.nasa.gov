@@ -1668,6 +1668,16 @@ describe('parseEventTypeFromSubject', () => {
       expected: ['GW', 'Optical Transient'],
     },
     {
+      name: 'Optical Transient pattern: \\bSVOM\\/VT\\b',
+      subject: 'GRB 260509A: SVOM/VT optical observations',
+      expected: ['GRB', 'Optical Transient'],
+    },
+    {
+      name: 'Optical Transient pattern: \\bSVOM\\/C-GFT\\b',
+      subject: 'GRB 260511B SVOM/C-GFT optical counterpart detection',
+      expected: ['GRB', 'Optical Transient'],
+    },
+    {
       name: 'Misc pattern',
       subject: 'This is a test subject for a miscellaneous event type',
       expected: ['Misc'],
