@@ -314,7 +314,7 @@ const eventTypeMatchers: Record<EventType, RegExp[]> = {
     /\bgamma[-\s]?ray[-\s]?bursts?\b/i,
     /\bFermi(?:\s?(?:GBM|LAT)|\d{9})?\b/i,
     /\bSwift(?:[/-](?:BAT|XRT|UVOT))?\b/i,
-    /\bSVOM\(?!\/VT\)\b/i,
+    /\bSVOM\(?!\/VT|\/C-GFT\)\b/i,
     /\bINTEGRAL\b/i,
     /\bXRF\d{6}[A-Z]?\b/i,
     /\bHETE\b/i,
