@@ -308,6 +308,10 @@ const eventTypeMatchers: Record<EventType, RegExp[]> = {
     /\bnot\s+a\s+(?:GRB|GW|FRB|SN|SGR|neutrino)\b/i,
     /\bprobably\s+not\s+a\b/i,
     /\bis\s+not\b/i,
+    /\bDisregard\b/i,
+    /\bIgnore\b/i,
+    /\bFalse Trigger\b/i,
+    /\bNot real\b/i,
   ],
   GRB: [
     /\bGRB\d{6}[A-Z]?\b/i,

@@ -1373,6 +1373,27 @@ describe('parseEventTypeFromSubject', () => {
       expected: ['Retraction'],
     },
     {
+      name: 'Retraction pattern: \\bDisregard\\b',
+      subject: 'Disregard the Swift-XRT Notices today',
+      expected: ['Retraction'],
+    },
+    {
+      name: 'Retraction pattern: \\bIgnore\\b',
+      subject: 'Ignore GCN/Swift-BAT Lightcurve Notices for trigger 353567',
+      expected: ['Retraction'],
+    },
+    {
+      name: 'Retraction pattern: \\bFalse Trigger\\b',
+      subject: 'Swift Trigger 287421: False trigger due to star tracker loss',
+      expected: ['Retraction'],
+    },
+    {
+      name: 'Retraction pattern: \\bNot real\\b',
+      subject:
+        'The EP-WXT triggers 01709047257 and 01709047278 are not real sources',
+      expected: ['Retraction'],
+    },
+    {
       name: 'GRB pattern: \\bGRB\\d{6}[A-Z]?\\b',
       subject: 'IPN localization of GRB000801',
       expected: ['GRB'],
