@@ -1388,50 +1388,41 @@ describe('parseEventTypeFromSubject', () => {
       expected: ['GRB'],
     },
     {
-      name: 'GRB pattern: \\bFermi(?:\\s?(?:GBM|LAT)|\\d{9})?\\b',
-      subject: 'GRB 230516A: Fermi GBM Final Real-time Localization',
-      expected: ['GRB'],
-    },
-    {
-      name: 'GRB pattern: \\bSwift(?:[/-](?:BAT|XRT|UVOT))?\\b',
-      subject:
-        'LIGO/Virgo S190930t: Swift J221951-484240 optical photometry of Chilescope observatory',
-      expected: ['GRB', 'GW', 'Optical Transient'],
-    },
-    {
-      name: 'GRB pattern: \\bSVOM\\b',
-      subject: 'EP260214b: SVOM/VT optical observation',
-      expected: ['X-ray Transient', 'Optical Transient'],
-    },
-    {
-      name: 'GRB pattern: \\bINTEGRAL\\b',
-      subject: 'INTEGRAL observations of the events in the GWTC-1 catalog',
-      expected: ['GRB', 'GW'],
-    },
-    {
       name: 'GRB pattern: \\bXRF\\d{6}[A-Z]?\\b',
       subject: 'XRF040812: possible afterglow second Chandra observation',
       expected: ['GRB', 'X-ray Transient', 'Afterglow'],
     },
     {
-      name: 'GRB pattern: \\bHAWC\\b',
-      subject: 'IceCube-220306A: No significant detection in HAWC',
-      expected: ['Neutrino'],
+      name: 'Gamma-ray Transient pattern: \\bFermi(?:\\s?(?:GBM|LAT)|\\d{9})?\\b',
+      subject: 'Fermi-LAT Gamma-ray Observations of IceCube-260315A',
+      expected: ['Gamma-ray Transient', 'Neutrino'],
     },
     {
-      name: 'GRB pattern: \\bHETE\\b',
-      subject: 'GRB040511 (=H3218):  A Long GRB Localized by HETE WXM and SXC',
-      expected: ['GRB'],
+      name: 'Gamma-ray Transient pattern: \\bSwift[:?/-]BAT\\b',
+      subject:
+        'LIGO/Virgo S190930t: Swift J221951-484240 optical photometry of Chilescope observatory',
+      expected: ['Gamma-ray Transient', 'GW', 'Optical Transient'],
     },
     {
-      name: 'GRB pattern: \\bKONUS\\b',
-      subject: 'Konus-Wind observation of GRB 190106A',
-      expected: ['GRB'],
+      name: 'Gamma-ray Transient pattern: \\bINTEGRAL\\b',
+      subject: 'INTEGRAL observations of the events in the GWTC-1 catalog',
+      expected: ['Gamma-ray Transient', 'GW'],
     },
     {
-      name: 'GRB pattern: \\bAstroSat\\b',
-      subject: 'GRB 201104A: AstroSat CZTI detection',
-      expected: ['GRB'],
+      name: 'Gamma-ray Transient pattern: \\bHETE\\b',
+      subject: 'HETE trigger H4044: RTT150 optical observations',
+      expected: ['Gamma-ray Transient', 'Optical Transient'],
+    },
+    {
+      name: 'Gamma-ray Transient pattern: \\bKONUS\\b',
+      subject:
+        'A giant outburst from Cygnus X-1 detected by Konus-Wind and Suzaku-WAM',
+      expected: ['Gamma-ray Transient'],
+    },
+    {
+      name: 'Gamma-ray Transient pattern: \\bAstroSat\\b',
+      subject: 'LIGO/Virgo G211117: Astrosat CZTI upper limits',
+      expected: ['Gamma-ray Transient', 'GW'],
     },
     {
       name: 'GW pattern: \\bGW\\d+\\b',
@@ -1543,7 +1534,7 @@ describe('parseEventTypeFromSubject', () => {
       name: 'Neutrino pattern: \\bANTARES\\b',
       subject:
         'Fermi-LAT-ANTARES 220121a: upper limits from a search for coincident neutrinos with IceCube',
-      expected: ['GRB', 'Neutrino'],
+      expected: ['Gamma-ray Transient', 'Neutrino'],
     },
     {
       name: 'Neutrino pattern: \\bKM3NeT\\b',
@@ -1631,6 +1622,11 @@ describe('parseEventTypeFromSubject', () => {
       expected: ['GRB', 'X-ray Transient'],
     },
     {
+      name: 'X-ray Transient pattern: \\bSwift[:?/-]XRT\\b',
+      subject: 'Enhanced Swift-XRT position of SGR 0501+4516',
+      expected: ['SGR', 'X-ray Transient'],
+    },
+    {
       name: 'Afterglow pattern: \\bafterglows?\\b',
       subject: 'GRB 041006 Optical afterglow observations',
       expected: ['GRB', 'Afterglow', 'Optical Transient'],
@@ -1676,6 +1672,11 @@ describe('parseEventTypeFromSubject', () => {
       name: 'Optical Transient pattern: \\bSVOM\\/C-GFT\\b',
       subject: 'GRB 260511B SVOM/C-GFT optical counterpart detection',
       expected: ['GRB', 'Optical Transient'],
+    },
+    {
+      name: 'Optical Transient pattern: \\bSwift[:?/-]UVOT\\b',
+      subject: 'EP250610A: Swift/UVOT Upper limits',
+      expected: ['X-ray Transient', 'Optical Transient'],
     },
     {
       name: 'Misc pattern',

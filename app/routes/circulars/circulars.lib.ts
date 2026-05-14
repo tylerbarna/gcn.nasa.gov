@@ -292,6 +292,7 @@ export function parseEventFromSubject(value: string) {
 type EventType =
   | 'Retraction'
   | 'GRB'
+  | 'Gamma-ray Transient'
   | 'GW'
   | 'SGR'
   | 'FRB'
@@ -312,11 +313,14 @@ const eventTypeMatchers: Record<EventType, RegExp[]> = {
     /\bGRB\d{6}[A-Z]?\b/i,
     /\bGRBs?\b/i,
     /\bgamma[-\s]?ray[-\s]?bursts?\b/i,
+    /\bXRF\d{6}[A-Z]?\b/i,
+  ],
+  'Gamma-ray Transient': [
     /\bFermi(?:\s?(?:GBM|LAT)|\d{9})?\b/i,
-    /\bSwift(?:[/-](?:BAT|XRT|UVOT))?\b/i,
+    /\bSwift(?![:?/-](?:XRT|UVOT))\b/i,
+    /\bSwift[:?/-]BAT\b/i,
     /\bSVOM\(?!\/VT|\/C-GFT\)\b/i,
     /\bINTEGRAL\b/i,
-    /\bXRF\d{6}[A-Z]?\b/i,
     /\bHETE\b/i,
     /\bKONUS\b/i,
     /\bAstroSat\b/i,
@@ -336,7 +340,7 @@ const eventTypeMatchers: Record<EventType, RegExp[]> = {
     /\bFRB\s?\d{6,8}[A-Za-z]?\b/i,
     /\bFRBs?\b/i,
     /\bfast[-\s]?radio[-\s]?bursts?\b/i,
-    /\bCHIIME\b/i,
+    /\bCHIME\b/i,
     /\bDSA-110\b/i,
   ],
   SN: [/\bSN\d{4}[A-Za-z]*\b/i, /\bSNe?\b/i, /\bsuper[-\s]?novae?\b/i],
@@ -362,6 +366,7 @@ const eventTypeMatchers: Record<EventType, RegExp[]> = {
     /\bXMM\b/i,
     /\bNICER\b/i,
     /\bNuSTAR\b/i,
+    /\bSwift[:?/-]XRT\b/i,
   ],
   Afterglow: [/\bafterglows?\b/i, /\bGW170817\b/i],
   'Optical Transient': [
@@ -375,6 +380,7 @@ const eventTypeMatchers: Record<EventType, RegExp[]> = {
     /\bRubin\b/i,
     /\bSVOM\/VT\b/i,
     /\bSVOM\/C-GFT\b/i,
+    /\bSwift[:?/-]UVOT\b/i,
   ],
 }
 
@@ -385,11 +391,14 @@ export function parseEventTypeFromSubject(
     if (pattern.test(subject)) return ['Retraction']
   }
 
-  const matches = (Object.keys(eventTypeMatchers) as EventType[])
+  let matches = (Object.keys(eventTypeMatchers) as EventType[])
     .filter((eventType) => eventType !== 'Retraction')
     .filter((eventType) =>
       eventTypeMatchers[eventType].some((pattern) => pattern.test(subject))
     )
+  if (matches.includes('GRB')) {
+    matches = matches.filter((m) => m !== 'Gamma-ray Transient')
+  }
 
   return matches.length ? matches : ['Misc']
 }
