@@ -301,6 +301,7 @@ type EventType =
   | 'X-ray Transient'
   | 'Afterglow'
   | 'Optical Transient'
+  | 'Kilonova'
 
 const eventTypeMatchers: Record<EventType, RegExp[]> = {
   Retraction: [
@@ -377,7 +378,7 @@ const eventTypeMatchers: Record<EventType, RegExp[]> = {
     /\boptical\b/i,
     /\bOT\b/i,
     /\bAT\d{4}[a-z]+\b/i,
-    /\bGW170817\b/i,
+    /\bHubble\b/i,
     /\bZTF(?:\d{2}[A-Za-z0-9]+)?\b/i,
     /\bMASTER\b/i,
     /\bPan-STARRS\b/i,
@@ -385,6 +386,12 @@ const eventTypeMatchers: Record<EventType, RegExp[]> = {
     /\bSVOM\/VT\b/i,
     /\bSVOM\/C-GFT\b/i,
     /\bSwift[:?/-]UVOT\b/i,
+  ],
+  Kilonova: [
+    /\bkilonovae?\b(?!-\w)/i,
+    /\bKN\b/i,
+    /\bGW170817\b/i,
+    /\bAT2017gfo\b/i,
   ],
 }
 

@@ -1449,7 +1449,7 @@ describe('parseEventTypeFromSubject', () => {
       name: 'GW pattern: \\bGW\\d+\\b',
       subject:
         'LIGO/Virgo GW170817: Further Hubble Space Telescope observations',
-      expected: ['GW', 'Afterglow', 'Optical Transient'],
+      expected: ['GW', 'Afterglow', 'Optical Transient', 'Kilonova'],
     },
     {
       name: 'GW pattern: \\bGWs?\\b',
@@ -1699,6 +1699,24 @@ describe('parseEventTypeFromSubject', () => {
       subject: 'EP250610A: Swift/UVOT Upper limits',
       expected: ['X-ray Transient', 'Optical Transient'],
     },
+    {
+      name: 'Kilonova pattern:  /\\bkilonova(?:e|s)?(?!\\s*[-\\w])\\b/i',
+      subject: 'GRB 230307A: good match with kilonova models',
+      expected: ['GRB', 'Kilonova'],
+    },
+    {
+      name: 'Kilonova pattern: \\bKN\b',
+      subject:
+        'LIGO/Virgo/KAGRA S250818k: MASTER predicovery limits of the AT2025ulz/ZTF25abjmnps KN candidate',
+      expected: ['GW', 'Optical Transient', 'Kilonova'],
+    },
+    {
+      name: 'Kilonova pattern: \\bAT2017gfo\\b',
+      subject:
+        'LIGO/Virgo G298048 GRAWITA: VST-ESO PARANAL follow up of AT2017gfo',
+      expected: ['GW', 'Optical Transient', 'Kilonova'],
+    },
+
     {
       name: 'Misc pattern',
       subject: 'This is a test subject for a miscellaneous event type',
