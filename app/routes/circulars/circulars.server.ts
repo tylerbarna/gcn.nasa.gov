@@ -33,6 +33,7 @@ import {
   formatCircularText,
   formatIsValid,
   parseEventFromSubject,
+  parseEventTypeFromSubject,
   subjectIsValid,
 } from './circulars.lib'
 import type {
@@ -371,6 +372,10 @@ export async function put(
 
   const eventId = parseEventFromSubject(item.subject)
   if (eventId) circular.eventId = eventId
+
+  const eventTypes = parseEventTypeFromSubject(item.subject)
+  if (eventTypes) circular.eventType = eventTypes
+
   const result = await putRaw(circular)
   if (eventId) await tryInitSynonym(eventId, result.createdOn)
   return result
@@ -414,6 +419,8 @@ export async function putVersion(
     ...circular,
     editedBy: formatAuthor(user),
     editedOn: Date.now(),
+    eventType:
+      circular.eventType ?? parseEventTypeFromSubject(circular.subject),
   }
 
   validateCircular(newCircularVersion)
@@ -623,6 +630,9 @@ export async function approveChangeRequest(
     submitter: changeRequest.submitter,
     createdOn: changeRequest.createdOn ?? circular.createdOn, // This is temporary while there are some requests without this property
     eventId: changeRequest.eventId || undefined,
+    eventType:
+      changeRequest.eventType ??
+      parseEventTypeFromSubject(changeRequest.subject),
   }
 
   await autoincrementVersion.put(newVersion)

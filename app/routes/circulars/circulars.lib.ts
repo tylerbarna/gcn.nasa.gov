@@ -11,6 +11,7 @@ export interface CircularMetadata {
   circularId: number
   subject: string
   eventId?: string
+  eventType?: EventType[]
 }
 
 export type SubmittedHow = 'web' | 'email' | 'email-legacy' | 'api'
@@ -289,7 +290,7 @@ export function parseEventFromSubject(value: string) {
   }
 }
 
-type EventType =
+export type EventType =
   | 'Retraction'
   | 'GRB'
   | 'Gamma-ray Transient'

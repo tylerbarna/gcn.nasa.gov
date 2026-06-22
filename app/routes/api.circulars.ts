@@ -207,7 +207,7 @@ export async function action({ request }: ActionFunctionArgs) {
     ...attrs,
   }
 
-  const { subject, body, format, eventId, circularId } = await request.json()
+  const { subject, body, format, eventId, circularId, eventType } = await request.json()
   if (
     !(
       typeof subject === 'string' &&
@@ -235,6 +235,7 @@ export async function action({ request }: ActionFunctionArgs) {
         subject,
         body,
         eventId,
+        eventType,
       }
 
       validateCircular(circularVersion)

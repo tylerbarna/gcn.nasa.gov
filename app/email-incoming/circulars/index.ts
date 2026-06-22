@@ -11,6 +11,7 @@ import {
   bodyIsValid,
   formatAuthor,
   parseEventFromSubject,
+  parseEventTypeFromSubject,
   subjectIsValid,
 } from '../../routes/circulars/circulars.lib'
 import { createEmailIncomingMessageHandler } from '../handler'
@@ -96,6 +97,9 @@ export const handler = createEmailIncomingMessageHandler(
 
     const eventId = parseEventFromSubject(parsed.subject)
     if (eventId) circular.eventId = eventId
+
+    const eventTypes = parseEventTypeFromSubject(parsed.subject)
+    if (eventTypes) circular.eventType = eventTypes
 
     // Removes sub as a property if it is undefined from the legacy users
     if (!circular.sub) delete circular.sub
