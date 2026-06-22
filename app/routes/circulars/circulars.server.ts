@@ -41,6 +41,7 @@ import type {
   CircularChangeRequest,
   CircularChangeRequestKeys,
   CircularMetadata,
+  EventType,
 } from './circulars.lib'
 import { sendEmail, sendEmailBulk } from '~/lib/email.server'
 import { origin } from '~/lib/env.server'
@@ -736,12 +737,45 @@ async function getLegacyEmails() {
   return emails
 }
 
+export async function getEmailsForEventTypes(
+  eventTypes: EventType[]
+): Promise<string[]> {
+  const db = await tables()
+  const client = db._doc as unknown as DynamoDBDocument
+
+  const results = await Promise.all(
+    eventTypes.map((eventType) =>
+      paginateQuery(
+        { client },
+        {
+          TableName: db.name('circulars_event_type_subscriptions'),
+          IndexName: 'circularsByEventType',
+          KeyConditionExpression: 'eventType = :eventType',
+          ExpressionAttributeValues: { ':eventType': eventType },
+          ProjectionExpression: 'email',
+        }
+      )
+    )
+  )
+  // Deduplicate to prevent sending multiple emails to users subscribed to multiple event types
+  const emails = new Set<string>()
+  for await (const pages of results) {
+    for await (const page of pages) {
+      page.Items?.forEach(({ email }) => emails.add(email))
+    }
+  }
+  return [...emails]
+}
+
 export async function send(circular: Circular) {
-  const [emails, legacyEmails] = await Promise.all([
+  const [emails, legacyEmails, eventTypeEmails] = await Promise.all([
     getEmails(),
     getLegacyEmails(),
+    circular.eventType?.length
+      ? getEmailsForEventTypes(circular.eventType)
+      : Promise.resolve([]),
   ])
-  const to = [...emails, ...legacyEmails]
+  const to = [...new Set([...emails, ...legacyEmails, ...eventTypeEmails])]
 
   // There is a limit of 262144 bytes for the Amazon SES API's TemplateData argument.
   // See https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_Template.html#SES-Type-Template-TemplateData

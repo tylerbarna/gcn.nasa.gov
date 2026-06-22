@@ -68,6 +68,11 @@ circulars_subscriptions
   sub **String
   PointInTimeRecovery true
 
+circulars_event_type_subscriptions
+  email *String
+  eventType **String
+  PointInTimeRecovery true
+
 email_notification
   sub *String
   uuid **String
@@ -158,6 +163,10 @@ circulars
 circulars_subscriptions
   sub *String
   name circularsSubscriptionsBySub
+
+circulars_event_type_subscriptions
+  eventType *String
+  name circularsByEventType
 
 announcement_subscriptions
   sub *String

@@ -415,3 +415,21 @@ export function parseEventTypeFromSubject(subject: string): EventType[] {
 
   return matches.length ? matches : ['Misc']
 }
+
+export const CIRCULARS_TOPIC = 'gcn.circulars'
+
+export const eventTypeTopics: Record<EventType, string> = {
+  GRB: 'gcn.circulars.grb',
+  'Gamma-ray Transient': 'gcn.circulars.gamma_ray_transient',
+  GW: 'gcn.circulars.gw',
+  SGR: 'gcn.circulars.sgr',
+  FRB: 'gcn.circulars.frb',
+  SN: 'gcn.circulars.sn',
+  Neutrino: 'gcn.circulars.neutrino',
+  'X-ray Transient': 'gcn.circulars.x_ray_transient',
+  Afterglow: 'gcn.circulars.afterglow',
+  'Optical Transient': 'gcn.circulars.optical_transient',
+  Kilonova: 'gcn.circulars.kilonova',
+  Retraction: 'gcn.circulars.retraction',
+  Misc: 'gcn.circulars.misc',
+}

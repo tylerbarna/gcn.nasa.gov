@@ -11,6 +11,7 @@ import { unmarshallTrigger } from '../utils'
 import { send } from '~/lib/kafka.server'
 import { createTriggerHandler } from '~/lib/lambdaTrigger.server'
 import type { Circular } from '~/routes/circulars/circulars.lib'
+import { EventType, eventTypeTopics } from '~/routes/circulars/circulars.lib'
 
 import { $id as circularsJsonSchemaId } from '@nasa-gcn/schema/gcn/circulars.schema.json'
 
@@ -19,13 +20,17 @@ export const handler = createTriggerHandler(
     if (eventName === 'INSERT' || eventName === 'MODIFY') {
       const circular = unmarshallTrigger(dynamodb!.NewImage) as Circular
       const { sub, ...cleanedCircular } = circular
-      await send(
+      const payload = JSON.stringify({
+        $schema: circularsJsonSchemaId,
+        ...cleanedCircular,
+      })
+
+      const topics = [
         'gcn.circulars',
-        JSON.stringify({
-          $schema: circularsJsonSchemaId,
-          ...cleanedCircular,
-        })
-      )
+        ...(circular.eventType ?? []).map((t) => eventTypeTopics[t]),
+      ]
+
+      await Promise.all(topics.map((topic) => send(topic, payload)))
     }
   }
 )
