@@ -12,7 +12,10 @@ import type { ReactNode } from 'react'
 
 import TimeAgo from '~/components/TimeAgo'
 import { useSearchString } from '~/lib/utils'
-import { type Circular, formatDateISO } from '~/routes/circulars/circulars.lib'
+import {
+  type Circular,
+  formatDateHumanReadable,
+} from '~/routes/circulars/circulars.lib'
 
 const submittedHowMap = {
   web: 'Web form',
@@ -68,14 +71,14 @@ export function FrontMatter({
         </FrontMatterItem>
       )}
       <FrontMatterItem label="Date">
-        {formatDateISO(createdOn)}{' '}
+        {formatDateHumanReadable(createdOn)}{' '}
         <small className="text-base-light">
           (<TimeAgo time={createdOn}></TimeAgo>)
         </small>
       </FrontMatterItem>
       {editedOn && (
         <FrontMatterItem label="Edited On">
-          {formatDateISO(editedOn)}{' '}
+          {formatDateHumanReadable(editedOn)}{' '}
           <small className="text-base-light">
             (<TimeAgo time={editedOn}></TimeAgo>)
           </small>

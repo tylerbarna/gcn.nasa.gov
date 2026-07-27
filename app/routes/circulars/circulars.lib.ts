@@ -135,6 +135,19 @@ export function formatDateISO(date: number) {
   return new Date(date).toISOString().replace(/\.\d+Z$/, 'Z')
 }
 
+/** Convert a date to a human-readable string in UTC. */
+export function formatDateHumanReadable(date: number) {
+  return new Date(date).toLocaleString('en', {
+    timeZone: 'UTC',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
+  })
+}
+
 /** Return true if the subject is valid, false if it is invalid, or undefined if it is an empty string */
 export function subjectIsValid(subject: string) {
   if (subject.length) {
