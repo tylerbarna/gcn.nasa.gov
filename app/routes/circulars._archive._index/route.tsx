@@ -296,22 +296,32 @@ export default function () {
         </Form>
 
         <ButtonGroup type="segmented">
-          <Link
-            to={`/circulars?view=index&limit=${limit}`}
-            preventScrollReset
+          <Button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault()
+              searchParams.set('view', 'index')
+              searchParams.delete('page')
+              submit(searchParams, { preventScrollReset: true })
+            }}
             className={getSelection('index')}
           >
-            <Icon.List role="presentation" />
-            Circulars
-          </Link>
-          <Link
-            to={`/circulars?view=group&limit=${limit}`}
-            preventScrollReset
+            <Icon.List role="presentation" /> Circulars
+          </Button>
+
+          <Button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault()
+              searchParams.set('view', 'group')
+              searchParams.delete('page')
+              submit(searchParams, { preventScrollReset: true })
+            }}
             className={getSelection('group')}
           >
-            <Icon.ContentCopy role="presentation" />
+            <Icon.List role="presentation" />
             Events
-          </Link>
+          </Button>
         </ButtonGroup>
 
         <Link to={`/circulars/new${searchString}`}>
