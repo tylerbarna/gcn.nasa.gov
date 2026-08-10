@@ -20,6 +20,7 @@ import { clamp } from 'lodash'
 import { DateSelector } from './DateSelectorMenu'
 import { LuceneAccordion } from './LuceneMenu'
 import { SortSelector } from './SortSelectorButton'
+import { EventTypeSelector } from './eventTypeMenu'
 import Hint from '~/components/Hint'
 import { ToolbarButtonGroup } from '~/components/ToolbarButtonGroup'
 import { usePermissionModerator } from '~/root'
@@ -75,6 +76,9 @@ export default function ArchiveHeader({
   const query = searchParams.get('query') || ''
   const startDate = searchParams.get('startDate') || undefined
   const endDate = searchParams.get('endDate') || undefined
+  const eventLogic = searchParams.get('eventLogic') || 'OR'
+  const eventTypes = searchParams.getAll('eventType')
+  const exceptEventTypes = searchParams.getAll('exceptEventType')
   const sort = searchParams.get('sort') || 'circularID'
   const view = searchParams.get('view') || 'index'
   const limit = clamp(parseInt(searchParams.get('limit') || '100'), 1, 100)
@@ -182,6 +186,15 @@ export default function ArchiveHeader({
             form={formId}
             defaultStartDate={startDate}
             defaultEndDate={endDate}
+          />
+        )}
+
+        {!isGroupView && (
+          <EventTypeSelector
+            form={formId}
+            defaultLogic={eventLogic}
+            defaultTypes={eventTypes}
+            defaultExceptTypes={exceptEventTypes}
           />
         )}
 

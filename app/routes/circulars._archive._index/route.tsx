@@ -55,6 +55,10 @@ export async function loader({ request: { url } }: LoaderFunctionArgs) {
 
   const startDate = searchParams.get('startDate') || undefined
   const endDate = searchParams.get('endDate') || undefined
+  const eventLogic =
+    (searchParams.get('eventLogic') as 'OR' | 'AND' | undefined) ?? 'OR'
+  const eventTypes = searchParams.getAll('eventType')
+  const exceptEventTypes = searchParams.getAll('exceptEventType')
   const page = parseInt(searchParams.get('page') || '1')
   const limit = clamp(parseInt(searchParams.get('limit') || '100'), 1, 100)
   const sort = searchParams.get('sort') || 'circularId'
@@ -66,6 +70,9 @@ export async function loader({ request: { url } }: LoaderFunctionArgs) {
     startDate,
     endDate,
     sort,
+    eventTypes,
+    eventTypesLogic: eventLogic,
+    eventTypesExclude: exceptEventTypes,
   })
   const requestedChangeCount = (await getChangeRequests()).length
 
