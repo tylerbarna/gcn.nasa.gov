@@ -14,7 +14,11 @@ import React from 'react'
 import TimeAgo from '~/components/TimeAgo'
 import { useSearchString } from '~/lib/utils'
 import { useFeature } from '~/root'
-import { type Circular, formatDateISO } from '~/routes/circulars/circulars.lib'
+import {
+  eventTypesHumanReadable,
+  type Circular,
+  formatDateISO,
+} from '~/routes/circulars/circulars.lib'
 
 const submittedHowMap = {
   web: 'Web form',
@@ -77,7 +81,9 @@ export function FrontMatter({
           {eventType.map((type, index) => (
             <React.Fragment key={type}>
               {index > 0 && ', '}
-              <Link to={`/circulars/types/${slug(type)}`}>{type}</Link>
+              <Link to={`/circulars/types/${slug(type)}`}>
+                {eventTypesHumanReadable[type]?.singular ?? type}
+              </Link>
             </React.Fragment>
           ))}
         </FrontMatterItem>
