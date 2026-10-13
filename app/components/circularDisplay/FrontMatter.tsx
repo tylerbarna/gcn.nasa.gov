@@ -15,8 +15,8 @@ import TimeAgo from '~/components/TimeAgo'
 import { useSearchString } from '~/lib/utils'
 import { useFeature } from '~/root'
 import {
-  eventTypesHumanReadable,
   type Circular,
+  eventTypesHumanReadable,
   formatDateISO,
 } from '~/routes/circulars/circulars.lib'
 
@@ -79,12 +79,12 @@ export function FrontMatter({
       {eventTypeFeatureFlag && eventType && (
         <FrontMatterItem label="Type">
           {eventType.map((type, index) => (
-            <React.Fragment key={type}>
+            <span key={type}>
               {index > 0 && ', '}
               <Link to={`/circulars/types/${slug(type)}`}>
                 {eventTypesHumanReadable[type]?.singular ?? type}
               </Link>
-            </React.Fragment>
+            </span>
           ))}
         </FrontMatterItem>
       )}
