@@ -17,6 +17,7 @@ import {
 } from '@trussworks/react-uswds'
 import { useState } from 'react'
 
+import { ActiveFilterChips } from './ActiveFilterChips'
 import { DateSelector } from './DateSelectorMenu'
 import { EventTypeBreadcrumb } from './EventTypeBreadcrumb'
 import { EventTypeSelectorMenu } from './EventTypeSelectorMenu'
@@ -215,6 +216,12 @@ export default function ArchiveHeader({
           <SortSelector form={formId} defaultValue={sort} />
         )}
       </ToolbarButtonGroup>
+      {!isGroupView && (
+        <ActiveFilterChips
+          eventTypes={eventTypes}
+          eventTypesExclude={eventTypesExclude}
+        />
+      )}
       {queryFallback && (
         <ErrorMessage>
           "{query}" does not adhere to advanced search syntax. Please refer to
