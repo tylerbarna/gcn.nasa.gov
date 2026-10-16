@@ -41,6 +41,7 @@ import {
   type CircularFormat,
   type CircularMetadata,
   circularFormats,
+  eventTypeIsValid,
 } from '~/routes/circulars/circulars.lib'
 import type { SynonymGroup } from '~/routes/synonyms/synonyms.lib'
 import { searchSynonymsByEventId } from '~/routes/synonyms/synonyms.server'
@@ -57,6 +58,12 @@ export async function loader({ request: { url } }: LoaderFunctionArgs) {
 
   const startDate = searchParams.get('startDate') || undefined
   const endDate = searchParams.get('endDate') || undefined
+  const eventTypes = searchParams.getAll('eventTypes').filter(eventTypeIsValid)
+  const eventTypesExclude = searchParams
+    .getAll('eventTypesExclude')
+    .filter(eventTypeIsValid)
+  const eventTypesLogic =
+    searchParams.get('eventTypesLogic') === 'AND' ? 'AND' : 'OR'
   const page = parseInt(searchParams.get('page') || '1')
   const limit = clamp(parseInt(searchParams.get('limit') || '100'), 1, 100)
   const sort = searchParams.get('sort') || 'circularId'
@@ -67,6 +74,9 @@ export async function loader({ request: { url } }: LoaderFunctionArgs) {
     limit,
     startDate,
     endDate,
+    eventTypes,
+    eventTypesLogic,
+    eventTypesExclude,
     sort,
   })
   const requestedChangeCount = (await getChangeRequests()).length

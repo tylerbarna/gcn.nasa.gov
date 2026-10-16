@@ -19,6 +19,7 @@ import { useState } from 'react'
 
 import { DateSelector } from './DateSelectorMenu'
 import { EventTypeBreadcrumb } from './EventTypeBreadcrumb'
+import { EventTypeSelectorMenu } from './EventTypeSelectorMenu'
 import { LuceneAccordion } from './LuceneMenu'
 import { SortSelector } from './SortSelectorButton'
 import Hint from '~/components/Hint'
@@ -77,6 +78,10 @@ export default function ArchiveHeader({
   const query = searchParams.get('query') || ''
   const startDate = searchParams.get('startDate') || undefined
   const endDate = searchParams.get('endDate') || undefined
+  const eventTypes = searchParams.getAll('eventTypes')
+  const eventTypesExclude = searchParams.getAll('eventTypesExclude')
+  const eventTypesLogic =
+    searchParams.get('eventTypesLogic') === 'AND' ? 'AND' : 'OR'
   const sort = searchParams.get('sort') || 'circularID'
   const [view, setView] = useState(searchParams.get('view') || 'index')
   const isGroupView = view === 'group'
@@ -195,6 +200,14 @@ export default function ArchiveHeader({
             form={formId}
             defaultStartDate={startDate}
             defaultEndDate={endDate}
+          />
+        )}
+        {!isGroupView && (
+          <EventTypeSelectorMenu
+            form={formId}
+            defaultEventTypes={eventTypes}
+            defaultEventTypesLogic={eventTypesLogic}
+            defaultEventTypesExclude={eventTypesExclude}
           />
         )}
 
