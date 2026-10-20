@@ -1,7 +1,7 @@
 // This should eventually be a npm package, but for now it lives here.
 // It's job is to notify the remix dev server of the version of the running
 // app to trigger HMR / HDR.
-import { logDevReady } from '@remix-run/node'
+import { broadcastDevReady, logDevReady } from '@remix-run/node'
 import * as fs from 'node:fs'
 import * as path from 'node:path'
 
@@ -19,7 +19,7 @@ export default {
       // in a series of rapid-fire reloads and failed network requests in the
       // browser. By keying on the server build file specifically we fire exactly
       // once per successful build.
-      if (filename !== absoluteBuildPath) return
+      if (path.resolve(filename) !== absoluteBuildPath) return
 
       if (lastTimeout) {
         clearTimeout(lastTimeout)
@@ -35,11 +35,18 @@ export default {
         }
 
         // The server bundle embeds the manifest hash multiple times (imports,
-        // references, etc.). We only want to call logDevReady once per build
-        // with a single hash, so take just the first match.
-        const match = /manifest-([A-F0-9]+)\.js/.exec(contents)
+        // references, etc.). We only want to call logDevReady / broadcastDevReady
+        // once per build with a single normalized lowercase hash (Remix compares
+        // buildHash === state.manifest.version strictly).
+        const match = /manifest-([a-f0-9]+)\.js/i.exec(contents)
         if (match) {
-          logDevReady({ assets: { version: match[1] } })
+          const version = match[1].toLowerCase()
+          const build = { assets: { version } }
+          try {
+            await broadcastDevReady(build)
+          } catch {
+            logDevReady(build)
+          }
         }
       }, 300)
     },
