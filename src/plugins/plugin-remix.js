@@ -6,29 +6,40 @@ import * as fs from 'node:fs'
 import * as path from 'node:path'
 
 const buildPath = 'build/server/index.cjs'
+const absoluteBuildPath = path.resolve(process.cwd(), buildPath)
 
 let lastTimeout
 
 export default {
   sandbox: {
-    async watcher() {
+    async watcher({ filename }) {
+      // Only react to changes in the server build output. The Remix compiler
+      // writes many files during a build (static assets, CSS, etc.) and
+      // watching all of them causes a cascade of logDevReady calls that result
+      // in a series of rapid-fire reloads and failed network requests in the
+      // browser. By keying on the server build file specifically we fire exactly
+      // once per successful build.
+      if (filename !== absoluteBuildPath) return
+
       if (lastTimeout) {
         clearTimeout(lastTimeout)
       }
 
       lastTimeout = setTimeout(async () => {
-        const contents = fs.readFileSync(
-          path.resolve(process.cwd(), buildPath),
-          'utf8'
-        )
-        const manifestMatches = contents.matchAll(/manifest-([A-F0-9]+)\.js/g)
-        const sent = new Set()
-        for (const match of manifestMatches) {
-          const buildHash = match[1]
-          if (!sent.has(buildHash)) {
-            sent.add(buildHash)
-            logDevReady({ assets: { version: buildHash } })
-          }
+        let contents
+        try {
+          contents = fs.readFileSync(absoluteBuildPath, 'utf8')
+        } catch {
+          // Build file may not exist yet or may still be writing; skip this cycle.
+          return
+        }
+
+        // The server bundle embeds the manifest hash multiple times (imports,
+        // references, etc.). We only want to call logDevReady once per build
+        // with a single hash, so take just the first match.
+        const match = /manifest-([A-F0-9]+)\.js/.exec(contents)
+        if (match) {
+          logDevReady({ assets: { version: match[1] } })
         }
       }, 300)
     },
